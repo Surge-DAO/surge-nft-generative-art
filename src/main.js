@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const { loadImage } = require("canvas");
 
 // get path of the current directory
 const isLocal = typeof process.pkg === "undefined";
@@ -13,7 +14,7 @@ const layersDir = `${basePath}/layers`;
 const {
     layerConfigurations,
     rarityDelimiter,
-    uniqueDnaTollerance
+    uniqueDnaTolerance
 } = require(path.join(basePath, "/src/config.js"));
 
 // list of generated DNAs
@@ -77,6 +78,11 @@ const getName = (_str) => {
     return nameWithoutWeight;
 };
 
+const getDnaId = (_str) => {
+    var dna = Number(_str.split(":").shift());
+    return dna;
+  };
+
 // create random item based on the weights of each layer
 const createDna = (_layers) => {
     let randDna = [];
@@ -104,7 +110,31 @@ const createDna = (_layers) => {
 const isDnaUnique = (_DnaList = [], _dna = []) => {
     let foundDna = _DnaList.find((i) => i.join("") === _dna.join(""));
     return foundDna == undefined ? true : false;
-  };
+};
+
+// map dna items to layer data
+const dnaToLayers = (_dna = [], _layers = []) => {
+    let mappedDnaToLayers = _layers.map((layer, index) => {
+      let selectedElement = layer.elements.find(
+        (e) => e.id == getDnaId(_dna[index])
+      );
+      return {
+        name: layer.name,
+        blendMode: layer.blendMode,
+        opacity: layer.opacity,
+        selectedElement: selectedElement,
+      };
+    });
+    return mappedDnaToLayers;
+};
+
+// load image from file
+const loadLayerImage = async (_layer) => {
+    return new Promise(async (resolve) => {
+      const image = await loadImage(`${_layer.selectedElement.path}`);
+      resolve({ layer: _layer, loadedImage: image });
+    });
+};
 
 const startCreating = async () => {
     let noOfItem = 1;
@@ -120,13 +150,24 @@ const startCreating = async () => {
         let dna = createDna(layers);
         if (isDnaUnique(dnaList, dna)) {
 
+            let results = dnaToLayers(dna, layers);
+            let loadedElements = [];
+
+            results.forEach((layer) => {
+                loadedElements.push(loadLayerImage(layer));
+            });
+
+            //start drawing image
+            // await Promise.all(loadedElements).then((renderObjectArray) => {
+
+            // });
             
             dnaList.push(dna);
             noOfItem++;
         } else {
             console.log("DNA exists!");
             failedCount++;
-            if (failedCount >= uniqueDnaTollerance) {
+            if (failedCount >= uniqueDnaTolerance) {
                 console.log(`Error: you need more layers to create ${layerConfigurations.items}  unique items`);
                 process.exit();
             }

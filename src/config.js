@@ -2,21 +2,21 @@
 const baseUri = 'ipfs://'
 
 const layerConfigurations = {
-      items: 2,
+      items: 1,
       layersOrder: [
         { name: 'Background' },
-        { name: 'Body' },
-        { name: 'Crown' },
-        { name: 'Earrings' },
-        { name: 'Hair' },
-        { name: 'Head' },
-        { name: 'Necklace' },
-        { name: 'Wood' },
+        // { name: 'Body' },
+        // { name: 'Crown' },
+        // { name: 'Earrings' },
+        // { name: 'Hair' },
+        // { name: 'Head' },
+        // { name: 'Necklace' },
+        // { name: 'Wood' },
       ],
 };
 
 const rarityDelimiter = '#';
 
-const uniqueDnaTollerance = 10;
+const uniqueDnaTolerance = 10;
 
-module.exports = { layerConfigurations, rarityDelimiter, uniqueDnaTollerance}
+module.exports = { layerConfigurations, rarityDelimiter, uniqueDnaTolerance}
