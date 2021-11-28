@@ -1,6 +1,6 @@
 const fs = require("fs");
 const path = require("path");
-const { loadImage } = require("canvas");
+const { createCanvas, loadImage } = require("canvas");
 
 // get path of the current directory
 const isLocal = typeof process.pkg === "undefined";
@@ -14,8 +14,13 @@ const layersDir = `${basePath}/layers`;
 const {
     layerConfigurations,
     rarityDelimiter,
-    uniqueDnaTolerance
+    uniqueDnaTolerance,
+    format
 } = require(path.join(basePath, "/src/config.js"));
+
+// get a drawing context on the canvas
+const canvas = createCanvas(format.width, format.height);
+const ctx = canvas.getContext("2d");
 
 // list of generated DNAs
 var dnaList = [];
@@ -158,9 +163,9 @@ const startCreating = async () => {
             });
 
             //start drawing image
-            // await Promise.all(loadedElements).then((renderObjectArray) => {
-
-            // });
+            await Promise.all(loadedElements).then((renderObjectArray) => {
+                ctx.clearRect(0, 0, format.width, format.height);
+            });
             
             dnaList.push(dna);
             noOfItem++;
