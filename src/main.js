@@ -200,7 +200,7 @@ const saveMetadata = (_noOfItem) => {
     );
   };
 
-const startCreating = async () => {
+const run = async () => {
     let noOfItem = 1;
     let failedCount = 0;
 
@@ -245,7 +245,7 @@ const startCreating = async () => {
             }
         }
     }
+    console.log("Successfully generated NFTs.");
 };
 
-
-module.exports = {buildSetup, startCreating};
+module.exports = {buildSetup, run};

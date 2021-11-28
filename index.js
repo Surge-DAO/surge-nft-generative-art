@@ -1,6 +1,6 @@
-const {buildSetup, startCreating} = require("./src/main.js");
+const {buildSetup, run} = require("./src/main.js");
 
 (() => {
     buildSetup();
-    startCreating();
+    run();
 })();
