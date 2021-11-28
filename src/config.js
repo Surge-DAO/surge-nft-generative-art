@@ -1,5 +1,6 @@
 // add base URI 
-const baseUri = 'ipfs://'
+const baseUri = 'ipfs://';
+const description = 'Surge NFTs project';
 
 const layerConfigurations = {
       items: 1,
@@ -24,4 +25,4 @@ const rarityDelimiter = '#';
 
 const uniqueDnaTolerance = 10;
 
-module.exports = { layerConfigurations, rarityDelimiter, uniqueDnaTolerance, format}
+module.exports = { layerConfigurations, rarityDelimiter, uniqueDnaTolerance, format, description, baseUri}

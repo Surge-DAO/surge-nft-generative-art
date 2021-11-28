@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const sha1 = require("sha1");
 const { createCanvas, loadImage } = require("canvas");
 
 // get path of the current directory
@@ -15,7 +16,9 @@ const {
     layerConfigurations,
     rarityDelimiter,
     uniqueDnaTolerance,
-    format
+    format,
+    description,
+    baseUri
 } = require(path.join(basePath, "/src/config.js"));
 
 // get a drawing context on the canvas
@@ -24,6 +27,11 @@ const ctx = canvas.getContext("2d");
 
 // list of generated DNAs
 var dnaList = [];
+
+// list of generated Metadata
+var metadataList = [];
+
+var attributesList = [];
 
 // create build directory to store generated images and json files
 const buildSetup = () => {
@@ -141,6 +149,57 @@ const loadLayerImage = async (_layer) => {
     });
 };
 
+// draw image
+const drawElement = (_renderObject) => {
+    ctx.globalAlpha = _renderObject.layer.opacity;
+    ctx.globalCompositeOperation = _renderObject.layer.blendMode;
+    ctx.drawImage(_renderObject.loadedImage, 0, 0, format.width, format.height);
+    addAttributes(_renderObject);
+};
+
+// add attributes to the image
+const addAttributes = (_element) => {
+    let selectedElement = _element.layer.selectedElement;
+    attributesList.push({
+      trait_type: _element.layer.name,
+      value: selectedElement.name,
+    });
+};
+
+// save image to build directoru
+const saveImage = (_noOfItem) => {
+    fs.writeFileSync(
+      `${buildDir}/images/${_noOfItem}.png`,
+      canvas.toBuffer("image/png")
+    );
+};
+
+const generateMetadata = (_dna, _noOfItem) => {
+    let dateTime = Date.now();
+    let tempMetadata = {
+      dna: sha1(_dna.join("")),
+      name: _noOfItem,
+      description: description,
+      image: `${baseUri}/${_noOfItem}.png`,
+      date: dateTime,
+      attributes: attributesList,
+      compiler: "Surge NFTs",
+    };
+    metadataList.push(tempMetadata);
+    attributesList = [];
+};
+
+const saveMetadata = (_noOfItem) => {
+    fs.writeFileSync(
+      `${buildDir}/json/${_noOfItem}.json`,
+      JSON.stringify(
+        metadataList.find((metadata) => metadata.name == _noOfItem),
+        null,
+        2
+      )
+    );
+  };
+
 const startCreating = async () => {
     let noOfItem = 1;
     let failedCount = 0;
@@ -165,6 +224,14 @@ const startCreating = async () => {
             //start drawing image
             await Promise.all(loadedElements).then((renderObjectArray) => {
                 ctx.clearRect(0, 0, format.width, format.height);
+
+                renderObjectArray.forEach((renderObject) => {
+                    drawElement(renderObject);
+                });
+
+                saveImage(noOfItem);
+                generateMetadata(dna, noOfItem);
+                saveMetadata(noOfItem);
             });
             
             dnaList.push(dna);
@@ -178,9 +245,6 @@ const startCreating = async () => {
             }
         }
     }
-
-
-
 };
 
 

@@ -1,0 +1,42 @@
+{
+  "dna": "ea1349a2506be9da13cbec22103096b437455f10",
+  "name": 1,
+  "description": "Surge NFTs project",
+  "image": "ipfs:///1.png",
+  "date": 1638116189878,
+  "attributes": [
+    {
+      "trait_type": "Background",
+      "value": "background"
+    },
+    {
+      "trait_type": "Body",
+      "value": "body"
+    },
+    {
+      "trait_type": "Crown",
+      "value": "crown"
+    },
+    {
+      "trait_type": "Earrings",
+      "value": "earrings"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "hair"
+    },
+    {
+      "trait_type": "Head",
+      "value": "headface"
+    },
+    {
+      "trait_type": "Necklace",
+      "value": "necklace"
+    },
+    {
+      "trait_type": "Wood",
+      "value": "wood"
+    }
+  ],
+  "compiler": "Surge NFTs"
+}
