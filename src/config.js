@@ -3,16 +3,19 @@ const baseUri = 'ipfs://';
 const description = 'Surge NFTs project';
 
 const layerConfigurations = {
-      items: 2,
+      items: 5,
       layersOrder: [
         { name: 'Background' },
-        { name: 'Body' },
-        { name: 'Earrings' },
         { name: 'Hair' },
-        { name: 'Head' },
-        { name: 'Necklace' },
-        { name: 'Wood' },
-        { name: 'Crown' },
+        { name: 'Body' },
+        { name: 'FrontHair' },
+        { name: 'Eyes' },
+        { name: 'Eyebrows' },
+        { name: 'Nose' },
+        { name: 'Mouth' },
+        { name: 'Blush' },
+        { name: 'Clothing' },
+        { name: 'Jewelry' },
       ],
 };
 
