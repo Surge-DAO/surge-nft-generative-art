@@ -11,7 +11,7 @@ npm install
 ## Usage
 
 ```
-npm run
+npm run run
 ```
 
 ## Contributing
