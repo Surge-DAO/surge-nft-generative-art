@@ -8,6 +8,29 @@ Surge NFT art generator to create random unique NFTs
 npm install
 ```
 
+## How to configurate
+
+All the configuration can be found in src/config.file
+
+To change the matadata uri:
+```
+const baseUri = 'ipfs://';
+```
+
+To add description of NFTs:
+```
+const description = 'Surge NFTs project';
+```
+
+How many NFTs to generate:
+```
+items: 10
+```
+
+```bash
+npm install
+```
+
 ## Usage
 
 ```
