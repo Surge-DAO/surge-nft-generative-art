@@ -15,7 +15,7 @@ const layersDir = `${basePath}/layers`;
 const {
     layerConfigurations,
     rarityDelimiter,
-    uniqueDnaTolerance,
+    uniqueMetadataTolerance,
     format,
     description,
     baseUri
@@ -125,6 +125,34 @@ const isDnaUnique = (_DnaList = [], _dna = []) => {
     return foundDna == undefined ? true : false;
 };
 
+// check if back hair, front hair, eyebrows match
+const areHairColorsSame = ( _dna = []) => {
+  let colors = [];
+  // after
+  _dna.forEach(function(element){
+    // TODO: || element.includes("eyebrows")
+    if (element.includes("back-hair") || element.includes("front-hair")){
+      const color = element.split('-');
+      colors.push(color[color.length - 2]);
+    }
+  });
+  return colors.every( (val, i, arr) => val === arr[0] );
+};
+
+// if jewelry face exists, no jewelry forehead
+const jewelryFaceExists = ( _dna = []) => {
+  let exists = false;
+  _dna.forEach(function(element){
+    if (element.includes("jewelryface")){
+      exists = true;
+    }
+  });
+  if (exists) {
+    _dna = _dna.filter(element => !(element.includes("jewelryforehead")));
+  }
+  return _dna;
+};
+
 // map dna items to layer data
 const dnaToLayers = (_dna = [], _layers = []) => {
     let mappedDnaToLayers = _layers.map((layer, index) => {
@@ -212,7 +240,10 @@ const run = async () => {
     // create images and metadata
     while ( noOfItem <= layerConfigurations.items) {
         let dna = createDna(layers);
-        if (isDnaUnique(dnaList, dna)) {
+        if (isDnaUnique(dnaList, dna) && areHairColorsSame(dna)) {
+
+            //check if jewelryface exsists
+            dha = jewelryFaceExists(dna);
 
             let results = dnaToLayers(dna, layers);
             let loadedElements = [];
@@ -237,9 +268,9 @@ const run = async () => {
             dnaList.push(dna);
             noOfItem++;
         } else {
-            console.log("DNA exists!");
+            console.log("Invalid metadata!");
             failedCount++;
-            if (failedCount >= uniqueDnaTolerance) {
+            if (failedCount >= uniqueMetadataTolerance) {
                 console.log(`Error: you need more layers to create ${layerConfigurations.items}  unique items`);
                 process.exit();
             }
