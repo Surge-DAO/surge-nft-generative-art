@@ -37,6 +37,13 @@ npm install
 npm run run
 ```
 
+## Useful Info
+How to check if PNG image is 8-bits or 24-bits
+```
+file <image-name>.png
+```
+source: https://askubuntu.com/a/943628
+
 ## Contributing
 Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
 

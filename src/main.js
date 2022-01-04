@@ -23,7 +23,7 @@ const {
 
 // get a drawing context on the canvas
 const canvas = createCanvas(format.width, format.height);
-const ctx = canvas.getContext("2d");
+const ctx = canvas.getContext("2d", {alpha: false});
 
 // list of generated DNAs
 var dnaList = [];
@@ -39,8 +39,9 @@ const buildSetup = () => {
       fs.rmSync(buildDir, { recursive: true });
     }
     fs.mkdirSync(buildDir);
+    // TODO: create two dirs for 24bits and 8 bits
     fs.mkdirSync(`${buildDir}/json`);
-    fs.mkdirSync(`${buildDir}/images`);
+    fs.mkdirSync(`${buildDir}/images-24bits`);
 };
 
 // extract layers into an object
@@ -197,7 +198,7 @@ const addAttributes = (_element) => {
 // save image to build directoru
 const saveImage = (_noOfItem) => {
     fs.writeFileSync(
-      `${buildDir}/images/${_noOfItem}.png`,
+      `${buildDir}/images-24bits/${_noOfItem}.png`,
       canvas.toBuffer("image/png")
     );
 };
