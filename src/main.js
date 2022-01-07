@@ -89,7 +89,7 @@ const getRarityWeight = (_str) => {
 const getName = (_str) => {
     let nameWithoutExtension = _str.slice(0, -4);
     var nameWithoutWeight = nameWithoutExtension.split(rarityDelimiter).shift();
-    return nameWithoutWeight;
+    return nameWithoutWeight.slice(0, -1);
 };
 
 const getDnaId = (_str) => {
