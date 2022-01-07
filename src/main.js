@@ -131,12 +131,17 @@ const areHairColorsSame = ( _dna = []) => {
   let colors = [];
   // after
   _dna.forEach(function(element){
-    if (element.includes("back-hair") || element.includes("front-hair") || element.includes("eyebrows")){
+    if (element.includes("back-hair") || element.includes("front-hair") || element.includes("eyebrows-b")){
       const color = element.split('-');
       colors.push(color[color.length - 2]);
     }
   });
   return colors.every( (val, i, arr) => val === arr[0] );
+};
+
+// long bangs cannot be combined with "veil solid" or "veil gauzy" in forehead jewelry category
+const areLongBangsWithVeilJewelry = ( _dna = []) => {
+  return _dna.some(e => e.includes("long-bangs")) && _dna.some(e => e.includes("veil"));
 };
 
 // if jewelry face exists, no jewelry forehead
@@ -240,7 +245,7 @@ const run = async () => {
     // create images and metadata
     while ( noOfItem <= layerConfigurations.items) {
         let dna = createDna(layers);
-        if (isDnaUnique(dnaList, dna) && areHairColorsSame(dna)) {
+        if (isDnaUnique(dnaList, dna) && areHairColorsSame(dna) && !areLongBangsWithVeilJewelry(dna)) {
 
             //check if jewelryface exsists
             dha = jewelryFaceExists(dna);
