@@ -171,6 +171,24 @@ const areJewelrySnakeBitesWithFullMouthRedHazelnut = ( _dna = []) => {
 // " Natural black hair with tight curl pattern should only go with hazel and night color skin tones"
 // TODO: how to identify? 
 
+// "front hair - cornrows" of any color must be paired with "back hair - small braids" of the same color
+const areFrontHairCornrowsWithBackHairSmallBraids = ( _dna = []) => {
+  return _dna.some(e => e.includes("cornrows")) && _dna.some(e => e.includes("small-brides"));
+};
+
+const cornrowsExistsAndApplyRules = ( _dna = []) => {
+  if (_dna.some(e => e.includes("cornrows"))){
+    return areFrontHairCornrowsWithBackHairSmallBraids(_dna);
+  }
+  return true;
+};
+
+// front hair cornrows and back hair small braids cannot be paired with "sand" base
+const isSandBaseWithCornrowsOrSmallBraids = ( _dna = []) => {
+  return _dna.some(e => e.includes("base") && e.includes("sand")) && (_dna.some(e => e.includes("cornrows")) || _dna.some(e => e.includes("small-braids")));
+};
+
+
 // when front hair is "front hair - shaved head" then there can be no back hair
 const shavedHeadExists = ( _dna = []) => {
   let exists = false;
@@ -286,7 +304,7 @@ const run = async () => {
     // create images and metadata
     while ( noOfItem <= layerConfigurations.items) {
         let dna = createDna(layers);
-        if (isDnaUnique(dnaList, dna) && hairColorsMatch(dna) && !areLongBangsWithVeilJewelry(dna) && !areLongBangsWithNaturalBlackHair(dna) && !areJewelrySnakeBitesWithFullMouthRedHazelnut(dna)) {
+        if (isDnaUnique(dnaList, dna) && hairColorsMatch(dna) && !areLongBangsWithVeilJewelry(dna) && !areLongBangsWithNaturalBlackHair(dna) && !areJewelrySnakeBitesWithFullMouthRedHazelnut(dna) && cornrowsExistsAndApplyRules(dna) && !isSandBaseWithCornrowsOrSmallBraids(dna)) {
 
             //check if jewelryface exsists
             dna = jewelryFaceExists(dna);
