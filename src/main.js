@@ -163,6 +163,10 @@ const areLongBangsWithNaturalBlackHair = ( _dna = []) => {
   return _dna.some(e => e.includes("long-bangs")) && _dna.some(e => e.includes("natural-black"));
 };
 
+//"jewelry face - snake bites" cannot be combined with "mouth - full smile red" or "mouth - full smile hazelnut"
+const areJewelrySnakeBitesWithFullMouthRedHazelnut = ( _dna = []) => {
+  return _dna.some(e => e.includes("snake-bites")) && (_dna.some(e => e.includes("full-smile-red")) || _dna.some(e => e.includes("full-smile-hazelnut")));
+};
 
 // if jewelry face exists, no jewelry forehead
 const jewelryFaceExists = ( _dna = []) => {
@@ -265,7 +269,7 @@ const run = async () => {
     // create images and metadata
     while ( noOfItem <= layerConfigurations.items) {
         let dna = createDna(layers);
-        if (isDnaUnique(dnaList, dna) && hairColorsMatch(dna) && !areLongBangsWithVeilJewelry(dna) && !areLongBangsWithNaturalBlackHair(dna)) {
+        if (isDnaUnique(dnaList, dna) && hairColorsMatch(dna) && !areLongBangsWithVeilJewelry(dna) && !areLongBangsWithNaturalBlackHair(dna) && !areJewelrySnakeBitesWithFullMouthRedHazelnut(dna)) {
 
             //check if jewelryface exsists
             dha = jewelryFaceExists(dna);
