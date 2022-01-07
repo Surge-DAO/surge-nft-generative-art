@@ -1,0 +1,18 @@
+#!/bin/bash
+INPUT_DIRECTORY="build/images-24bits"
+OUTPUT_DIRECTORY="build/images-8bits"
+
+if [[ ! -d "$INPUT_DIRECTORY" ]]
+then
+    echo "input folder does not exist"
+    exit
+fi
+
+if ! command -v pngquant &> /dev/null
+then
+    brew install pngquant
+fi
+
+mkdir -p "$OUTPUT_DIRECTORY"
+
+for f in "$INPUT_DIRECTORY"/*.png; do pngquant $f --output "$OUTPUT_DIRECTORY"/"$(basename -- $f)"; done
