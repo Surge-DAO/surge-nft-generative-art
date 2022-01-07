@@ -131,8 +131,7 @@ const areHairColorsSame = ( _dna = []) => {
   let colors = [];
   // after
   _dna.forEach(function(element){
-    // TODO: || element.includes("eyebrows")
-    if (element.includes("back-hair") || element.includes("front-hair")){
+    if (element.includes("back-hair") || element.includes("front-hair") || element.includes("eyebrows")){
       const color = element.split('-');
       colors.push(color[color.length - 2]);
     }
