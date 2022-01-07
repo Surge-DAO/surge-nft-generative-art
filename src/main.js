@@ -224,6 +224,18 @@ const smallBraidsExistsAndApplyRules = ( _dna = []) => {
   return true;
 };
 
+// "front hair - baby curls" may be paired with any "back hair - small braids" color
+const areBabyCurlsWithSmallBraids = ( _dna = []) => {
+  return _dna.some(e => e.includes("baby-curls")) && _dna.some(e => e.includes("small-braids"));
+};
+
+const babyCurlsExistsAndApplyRules = ( _dna = []) => {
+  if (_dna.some(e => e.includes("baby-curls"))){
+    return areBabyCurlsWithSmallBraids(_dna);
+  }
+  return true;
+};
+
 // rules
 const rules = ( _dna = []) => {
   return hairColorsMatch(_dna) && 
@@ -234,7 +246,8 @@ const rules = ( _dna = []) => {
     !isSandBaseWithCornrowsOrSmallBraids(_dna) && 
     naturalBlackExistsAndApplyRules(_dna) &&
     choppyExistsAndApplyRules(_dna) &&
-    smallBraidsExistsAndApplyRules(_dna);
+    smallBraidsExistsAndApplyRules(_dna) &&
+    babyCurlsExistsAndApplyRules(_dna);
 };
 
 // when front hair is "front hair - shaved head" then there can be no back hair
