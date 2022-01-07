@@ -168,6 +168,23 @@ const areJewelrySnakeBitesWithFullMouthRedHazelnut = ( _dna = []) => {
   return _dna.some(e => e.includes("snake-bites")) && (_dna.some(e => e.includes("full-smile-red")) || _dna.some(e => e.includes("full-smile-hazelnut")));
 };
 
+// " Natural black hair with tight curl pattern should only go with hazel and night color skin tones"
+// TODO: how to identify? 
+
+// when front hair is "front hair - shaved head" then there can be no back hair
+const shavedHeadExists = ( _dna = []) => {
+  let exists = false;
+  _dna.forEach(function(element){
+    if (element.includes("shaved")){
+      exists = true;
+    }
+  });
+  if (exists) {
+    _dna = _dna.filter(element => !(element.includes("back-hair")));
+  }
+  return _dna;
+};
+
 // if jewelry face exists, no jewelry forehead
 const jewelryFaceExists = ( _dna = []) => {
   let exists = false;
@@ -272,7 +289,10 @@ const run = async () => {
         if (isDnaUnique(dnaList, dna) && hairColorsMatch(dna) && !areLongBangsWithVeilJewelry(dna) && !areLongBangsWithNaturalBlackHair(dna) && !areJewelrySnakeBitesWithFullMouthRedHazelnut(dna)) {
 
             //check if jewelryface exsists
-            dha = jewelryFaceExists(dna);
+            dna = jewelryFaceExists(dna);
+
+            //check if shaved hair
+            dna = shavedHeadExists(dna);
 
             let results = dnaToLayers(dna, layers);
             let loadedElements = [];
