@@ -185,7 +185,7 @@ const naturalBlackExistsAndApplyRules = ( _dna = []) => {
 
 // "front hair - cornrows" of any color must be paired with "back hair - small braids" of the same color
 const areFrontHairCornrowsWithBackHairSmallBraids = ( _dna = []) => {
-  return _dna.some(e => e.includes("cornrows")) && _dna.some(e => e.includes("small-brides"));
+  return _dna.some(e => e.includes("cornrows")) && _dna.some(e => e.includes("small-braids"));
 };
 
 const cornrowsExistsAndApplyRules = ( _dna = []) => {
@@ -212,6 +212,18 @@ const choppyExistsAndApplyRules = ( _dna = []) => {
   return true;
 };
 
+// "back hair - small braids" can only be paired with "front hair - cornrows" or "front hair - baby curls"
+const areSmallBraidsWithCornrowsOrBabyCurls = ( _dna = []) => {
+  return _dna.some(e => e.includes("small-braids")) && (_dna.some(e => e.includes("choppy-pixie")) || _dna.some(e => e.includes("baby-curls")));
+};
+
+const smallBraidsExistsAndApplyRules = ( _dna = []) => {
+  if (_dna.some(e => e.includes("small-braids"))){
+    return areSmallBraidsWithCornrowsOrBabyCurls(_dna);
+  }
+  return true;
+};
+
 // rules
 const rules = ( _dna = []) => {
   return hairColorsMatch(_dna) && 
@@ -221,7 +233,8 @@ const rules = ( _dna = []) => {
     cornrowsExistsAndApplyRules(_dna) && 
     !isSandBaseWithCornrowsOrSmallBraids(_dna) && 
     naturalBlackExistsAndApplyRules(_dna) &&
-    choppyExistsAndApplyRules(_dna);
+    choppyExistsAndApplyRules(_dna) &&
+    smallBraidsExistsAndApplyRules(_dna);
 };
 
 // when front hair is "front hair - shaved head" then there can be no back hair
