@@ -126,16 +126,29 @@ const isDnaUnique = (_DnaList = [], _dna = []) => {
     return foundDna == undefined ? true : false;
 };
 
-// check if back hair, front hair, eyebrows match
-const areHairColorsSame = ( _dna = []) => {
+// check if back hair, front hair, eyebrows-b match
+// long bangs in salmon, green, blue, and pink may be combined with any color back hair 
+const hairColorsMatch = ( _dna = []) => {
+  // check if long bangs salmon, green, blue or pink
+  let frontHairColorCondition = _dna.some(e => e.includes("long-bangs") && (e.includes("salmon") || e.includes("green") || e.includes("blue") || e.includes("pink")));
+
   let colors = [];
-  // after
-  _dna.forEach(function(element){
-    if (element.includes("back-hair") || element.includes("front-hair") || element.includes("eyebrows-b")){
-      const color = element.split('-');
-      colors.push(color[color.length - 2]);
-    }
-  });
+  if(frontHairColorCondition) {
+    //TODO: matches back hair or front hair?
+    _dna.forEach(function(element){
+      if (element.includes("back-hair") || element.includes("eyebrows-b")){
+        const color = element.split('-');
+        colors.push(color[color.length - 2]);
+      }
+    });
+  } else {
+    _dna.forEach(function(element){
+      if (element.includes("back-hair") || element.includes("front-hair") || element.includes("eyebrows-b")){
+        const color = element.split('-');
+        colors.push(color[color.length - 2]);
+      }
+    });
+  }
   return colors.every( (val, i, arr) => val === arr[0] );
 };
 
@@ -143,6 +156,13 @@ const areHairColorsSame = ( _dna = []) => {
 const areLongBangsWithVeilJewelry = ( _dna = []) => {
   return _dna.some(e => e.includes("long-bangs")) && _dna.some(e => e.includes("veil"));
 };
+
+//"front hair - long bangs" & variant colors of it cannot be combined with "back hair - natural black"
+// TODO: - no natural black hair?
+const areLongBangsWithNaturalBlackHair = ( _dna = []) => {
+  return _dna.some(e => e.includes("long-bangs")) && _dna.some(e => e.includes("natural-black"));
+};
+
 
 // if jewelry face exists, no jewelry forehead
 const jewelryFaceExists = ( _dna = []) => {
@@ -245,7 +265,7 @@ const run = async () => {
     // create images and metadata
     while ( noOfItem <= layerConfigurations.items) {
         let dna = createDna(layers);
-        if (isDnaUnique(dnaList, dna) && areHairColorsSame(dna) && !areLongBangsWithVeilJewelry(dna)) {
+        if (isDnaUnique(dnaList, dna) && hairColorsMatch(dna) && !areLongBangsWithVeilJewelry(dna) && !areLongBangsWithNaturalBlackHair(dna)) {
 
             //check if jewelryface exsists
             dha = jewelryFaceExists(dna);
