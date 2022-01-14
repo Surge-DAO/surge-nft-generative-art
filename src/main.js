@@ -136,13 +136,16 @@ const hairColorsMatch = ( _dna = []) => {
   let frontHairColorCondition = _dna.some(e => e.includes("long-bangs") && (e.includes("salmon") || e.includes("green") || e.includes("blue") || e.includes("pink")));
 
   let colors = [];
+  // TODO: refactor
   if(frontHairColorCondition) {
-    //TODO: matches back hair or front hair?
     _dna.forEach(function(element){
-      if (element.includes("back-hair") || element.includes("eyebrows-b")){
-        const color = element.split('-');
-        colors.push(color[color.length - 2]);
-      }
+      if (element.includes("back-hair") || element.includes("eyebrows-b") || element.includes("front-hair")){
+        // with matching back hair color or “back hair - straight black” or “back hair - wavy black”
+        if (!(element.includes("back-hair") && (element.includes("straigth-black") || element.includes("wavy-black")))) {
+          const color = element.split('-');
+          colors.push(color[color.length - 2]);
+        }
+      } 
     });
   } else {
     _dna.forEach(function(element){
@@ -161,7 +164,6 @@ const areLongBangsWithVeilJewelry = ( _dna = []) => {
 };
 
 //"front hair - long bangs" & variant colors of it cannot be combined with "back hair - natural black"
-// TODO: - no natural black hair?
 const areLongBangsWithNaturalBlackHair = ( _dna = []) => {
   return _dna.some(e => e.includes("long-bangs")) && _dna.some(e => e.includes("natural-black"));
 };
@@ -172,7 +174,9 @@ const areJewelrySnakeBitesWithFullMouthRedHazelnut = ( _dna = []) => {
 };
 
 // " Natural black hair with tight curl pattern should only go with hazel and night color skin tones"
-// TODO: how to identify? 
+const isNaturalBlackWithHazelAndNighSkin = ( _dna = []) => {
+  return _dna.some(e => e.includes("natural-black")) && (_dna.some(e => e.includes("hazel")) || _dna.some(e => e.includes("baby night")));
+};
 
 //back hair - natural black must be paired with "front hair - cornrows" or "front hair - baby curls"
 const isNaturalBlackWithCornRowsOrBabyCurls = ( _dna = []) => {
@@ -181,7 +185,7 @@ const isNaturalBlackWithCornRowsOrBabyCurls = ( _dna = []) => {
 
 const naturalBlackExistsAndApplyRules = ( _dna = []) => {
   if (_dna.some(e => e.includes("natural-black"))){
-    return isNaturalBlackWithCornRowsOrBabyCurls(_dna);
+    return isNaturalBlackWithCornRowsOrBabyCurls(_dna) && isNaturalBlackWithHazelAndNighSkin(_dna);
   }
   return true;
 };
@@ -239,6 +243,18 @@ const babyCurlsExistsAndApplyRules = ( _dna = []) => {
   return true;
 };
 
+// "front hair - choppy microbangs" can only be paired with "back hair - choppy pixie"
+const isFrontChoppyWithBackChoppy = ( _dna = []) => {
+  return _dna.some(e => e.includes("back-hair") && e.includes("choppy-pixie")) && (_dna.some(e => e.includes("front-hair")) || _dna.some(e => e.includes("choppy-microbangs")));
+};
+
+const choppyPixieExistsAndApplyRules = ( _dna = []) => {
+  if (_dna.some(e => e.includes("choppy-pixie"))){
+    return isFrontChoppyWithBackChoppy(_dna);
+  }
+  return true;
+};
+
 // rules
 const rules = ( _dna = []) => {
   return hairColorsMatch(_dna) && 
@@ -250,7 +266,8 @@ const rules = ( _dna = []) => {
     naturalBlackExistsAndApplyRules(_dna) &&
     choppyExistsAndApplyRules(_dna) &&
     smallBraidsExistsAndApplyRules(_dna) &&
-    babyCurlsExistsAndApplyRules(_dna);
+    babyCurlsExistsAndApplyRules(_dna) &&
+    choppyPixieExistsAndApplyRules(_dna);
 };
 
 // when front hair is "front hair - shaved head" then there can be no back hair
@@ -333,6 +350,12 @@ const saveImage24bits = (_noOfItem) => {
 const saveImage8bits = (_noOfItem) => {
   canvasPlus.load( `${buildDir}/images-24bits/${_noOfItem}.png`, function(err) {
     if (err) throw err;
+
+    canvasPlus.resize({
+      "width": 640,
+      "height": 480,
+      "mode": "fit"
+    });
       
     canvasPlus.quantize({ colors: 256, dither: true, ditherType: "FloydSteinberg" });
     
