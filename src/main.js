@@ -2,6 +2,8 @@ const fs = require("fs");
 const path = require("path");
 const sha1 = require("sha1");
 const { createCanvas, loadImage } = require("canvas");
+var CanvasPlus = require('pixl-canvas-plus');
+var canvasPlus = new CanvasPlus();
 
 // get path of the current directory
 const isLocal = typeof process.pkg === "undefined";
@@ -42,6 +44,7 @@ const buildSetup = () => {
     // TODO: create two dirs for 24bits and 8 bits
     fs.mkdirSync(`${buildDir}/json`);
     fs.mkdirSync(`${buildDir}/images-24bits`);
+    fs.mkdirSync(`${buildDir}/images-8bits`);
 };
 
 // extract layers into an object
@@ -320,11 +323,26 @@ const addAttributes = (_element) => {
 };
 
 // save image to build directoru
-const saveImage = (_noOfItem) => {
+const saveImage24bits = (_noOfItem) => {
     fs.writeFileSync(
       `${buildDir}/images-24bits/${_noOfItem}.png`,
       canvas.toBuffer("image/png")
     );
+};
+
+const saveImage8bits = (_noOfItem) => {
+  canvasPlus.load( `${buildDir}/images-24bits/${_noOfItem}.png`, function(err) {
+    if (err) throw err;
+      
+    canvasPlus.quantize({ colors: 256, dither: true, ditherType: "FloydSteinberg" });
+    
+    canvasPlus.write({"format":"png", "quality":90, "compression":1}, function(err, buf) {
+      if (err) throw err;
+      
+      // 'buf' will be a binary buffer containing final image...
+      fs.writeFileSync(`${buildDir}/images-8bits/${_noOfItem}.png`, buf);
+    });
+  });
 };
 
 const generateMetadata = (_dna, _noOfItem) => {
@@ -388,7 +406,8 @@ const run = async () => {
                     drawElement(renderObject);
                 });
 
-                saveImage(noOfItem);
+                saveImage24bits(noOfItem);
+                saveImage8bits(noOfItem);
                 generateMetadata(dna, noOfItem);
                 saveMetadata(noOfItem);
             });

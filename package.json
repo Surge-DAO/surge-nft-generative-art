@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "canvas": "^2.8.0",
+    "pixl-canvas-plus": "^2.0.11",
     "sha1": "^1.1.1"
   }
 }
