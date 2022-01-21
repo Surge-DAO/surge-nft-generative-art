@@ -30,7 +30,8 @@ const format = {
 }
 
 const rarityDelimiter = '#';
+const nameSeparator = '-';
 
 const uniqueMetadataTolerance = 1000;
 
-module.exports = { layerConfigurations, rarityDelimiter, uniqueMetadataTolerance, format, description, baseUri}
+module.exports = { layerConfigurations, rarityDelimiter, nameSeparator, uniqueMetadataTolerance, format, description, baseUri}
