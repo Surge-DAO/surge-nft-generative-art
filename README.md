@@ -8,7 +8,7 @@ Surge NFT art generator to create random unique NFTs
 npm install
 ```
 
-## How to configurate
+## How to configure
 
 All the configuration can be found in src/config.file
 
