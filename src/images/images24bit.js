@@ -28,9 +28,19 @@ const addAttributes = (_element, _attributesList) => {
     let selectedElement = _element.layer.selectedElement;
     _attributesList.push({
       trait_type: _element.layer.name,
-      value: selectedElement.name,
+      value: getTraitName(selectedElement.name),
     });
 };
+
+const getTraitName = (_str) => {
+  return capitalizeWords(_str.split("-").slice(3)).join(' ');
+};
+
+const capitalizeWords = (arr) => {
+  return arr.map(element => {
+    return element.charAt(0).toUpperCase() + element.substring(1).toLowerCase();
+  });
+}
 
 // save image to build directoru
 const saveImage24bits = (_noOfItem) => {

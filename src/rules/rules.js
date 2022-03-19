@@ -146,6 +146,76 @@ const hairColorsMatch = ( _dna = []) => {
     return _dna.some(e => e.includes("shaved")) && (_dna.some(e => e.includes("back-hair")));
   };
 
+  //if there is a tattoo, clothing cannot be "simple tee" or "simple turtleneck" of any color
+  const isTattooWithSimpleTeeorTurtleneck = ( _dna = []) => {
+    return _dna.some(e => e.includes("tattoos") && (_dna.some(e => e.includes("simple-tee")) || _dna.some(e => e.includes("simple-turtleneck"))));
+  };
+  
+  const tattooExistsAndApplyRules = ( _dna = []) => {
+    if (_dna.some(e => e.includes("tattoos"))){
+      return !isTattooWithSimpleTeeorTurtleneck(_dna);
+    }
+    return true;
+  };
+
+  // "jewelry - neck ribbon" of any color cannot be combined with "clothing - simple turtleneck" of any color
+  const isJewelryNeckRibbonWithSimpleTurtleneck = ( _dna = []) => {
+    return _dna.some(e => e.includes("jewelry-neck") && e.includes("ribbon") && (_dna.some(e => e.includes("simple-turtleneck"))));
+  };
+  
+  const jewelryNeckRibbonExistsAndApplyRules = ( _dna = []) => {
+    if (_dna.some(e => e.includes("jewelry-neck") && e.includes("ribbon"))){
+      return !isJewelryNeckRibbonWithSimpleTurtleneck(_dna);
+    }
+    return true;
+  };
+
+  // "jewelry - neck stacked collar" cannot be combined with "clothing - simple turtleneck" of any color
+  const isJewelryNeckStackedCollarWithSimpleTurtleneck = ( _dna = []) => {
+    return _dna.some(e => e.includes("jewelry-neck") && e.includes("stacked-collar") && (_dna.some(e => e.includes("simple-turtleneck"))));
+  };
+  
+  const jewelryNeckStackedCollarExistsAndApplyRules = ( _dna = []) => {
+    if (_dna.some(e => e.includes("jewelry-neck") && e.includes("stacked-collar"))){
+      return !isJewelryNeckStackedCollarWithSimpleTurtleneck(_dna);
+    }
+    return true;
+  };
+
+  //base - spice of any shape may not be combined with any hairstyle with "brown" in its name
+  const isBaseSpiceWithBrownHairstyle = ( _dna = []) => {
+    return _dna.some(e => e.includes("base") && e.includes("spice")) && (_dna.some(e => e.includes("hair") && e.includes("brown")));
+  };
+  
+  const baseSpiceExistsAndApplyRules = ( _dna = []) => {
+    if (_dna.some(e => e.includes("base") && e.includes("spice"))){
+      return !isBaseSpiceWithBrownHairstyle(_dna);
+    }
+    return true;
+  };
+
+// if jewelry - forehead - veil then back hair must be back hair - veil of the same color
+const isJewelryForeheadVeilAndBackHairVeil = ( _dna = []) => {
+  return _dna.some(e => e.includes("forehead") && e.includes("veil")) && (_dna.some(e => e.includes("back-hair") && e.includes("veil")));
+};  
+
+const foreheadVeilExistsAndApplyRules = ( _dna = []) => {
+  if (_dna.some(e => e.includes("forehead") && e.includes("veil"))){
+    return isJewelryForeheadVeilAndBackHairVeil(_dna);
+  }
+  return true;
+};
+
+// necklace - wagni and necklace - ribbon cannot be combined,
+const isNecklaceWagmiAndNecklaceRibbon = ( _dna = []) => {
+  return _dna.some(e => e.includes("jewelry-neck") && e.includes("wagmi")) && (_dna.some(e => e.includes("jewelry-neck") && e.includes("ribbon")));
+}; 
+
+// necklace - choker and necklace - ribbon cannot be combined
+const isNecklaceChokerAndNecklaceRibbon = ( _dna = []) => {
+  return _dna.some(e => e.includes("jewelry-neck") && e.includes("collar")) && (_dna.some(e => e.includes("jewelry-neck") && e.includes("ribbon")));
+}; 
+
 // rules
 const rules = ( _dna = []) => {
     return hairColorsMatch(_dna) && 
@@ -154,6 +224,8 @@ const rules = ( _dna = []) => {
       !areJewelrySnakeBitesWithFullMouthRedHazelnut(_dna) &&
       !isJewelryFaceWithJewelryForehead(_dna) &&
       !isShavedHeadWithBackHair(_dna) &&
+      !isNecklaceChokerAndNecklaceRibbon(_dna) &&
+      !isNecklaceWagmiAndNecklaceRibbon(_dna) &&
       cornrowsExistsAndApplyRules(_dna) && 
       !isSandBaseWithCornrowsOrSmallBraids(_dna) && 
       naturalBlackExistsAndApplyRules(_dna) &&
@@ -161,7 +233,12 @@ const rules = ( _dna = []) => {
       smallBraidsExistsAndApplyRules(_dna) &&
       babyCurlsExistsAndApplyRules(_dna) &&
       choppyPixieExistsAndApplyRules(_dna) &&
-      backHairSolidVeilExistsAndApplyRules(_dna);
+      backHairSolidVeilExistsAndApplyRules(_dna) &&
+      tattooExistsAndApplyRules(_dna) &&
+      jewelryNeckRibbonExistsAndApplyRules(_dna) &&
+      jewelryNeckStackedCollarExistsAndApplyRules(_dna) &&
+      baseSpiceExistsAndApplyRules(_dna) &&
+      foreheadVeilExistsAndApplyRules(_dna);
   };
 
   module.exports = { rules }
