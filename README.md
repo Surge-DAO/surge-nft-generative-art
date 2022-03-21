@@ -34,7 +34,7 @@ npm install
 ## Usage
 
 ```
-npm run run
+npm run start
 ```
 
 ## Useful Info

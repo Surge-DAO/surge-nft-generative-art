@@ -212,8 +212,13 @@ const isNecklaceWagmiAndNecklaceRibbon = ( _dna = []) => {
 }; 
 
 // necklace - choker and necklace - ribbon cannot be combined
-const isNecklaceChokerAndNecklaceRibbon = ( _dna = []) => {
+const isNecklaceRibbonAndBlank = ( _dna = []) => {
   return _dna.some(e => e.includes("jewelry-neck") && e.includes("collar")) && (_dna.some(e => e.includes("jewelry-neck") && e.includes("ribbon")));
+}; 
+
+// necklace-wagmi-collar, necklace - high collar, necklace - ribbon, and necklace - spiked collar 
+const isNecklaceCollarAndBlank = ( _dna = []) => {
+  return _dna.some(e => e.includes("jewelry-neck") && e.includes("collar")) && (_dna.some(e => e.includes("jewelry-neck") && e.includes("Blank")));
 }; 
 
 // rules
@@ -224,8 +229,9 @@ const rules = ( _dna = []) => {
       !areJewelrySnakeBitesWithFullMouthRedHazelnut(_dna) &&
       !isJewelryFaceWithJewelryForehead(_dna) &&
       !isShavedHeadWithBackHair(_dna) &&
-      !isNecklaceChokerAndNecklaceRibbon(_dna) &&
       !isNecklaceWagmiAndNecklaceRibbon(_dna) &&
+      isNecklaceCollarAndBlank(_dna) &&
+      isNecklaceRibbonAndBlank(_dna) &&
       cornrowsExistsAndApplyRules(_dna) && 
       !isSandBaseWithCornrowsOrSmallBraids(_dna) && 
       naturalBlackExistsAndApplyRules(_dna) &&

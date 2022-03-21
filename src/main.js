@@ -60,7 +60,7 @@ const run = async () => {
             itemList.push(item);
             noOfItem++;
         } else {
-            console.log("Invalid metadata!");
+            console.log("Applying rules: eliminating wrong metadata");
             failedCount++;
             if (failedCount >= uniqueMetadataTolerance) {
                 console.log(`Error: you need more layers to create ${layerConfigurations.items}  unique items`);
