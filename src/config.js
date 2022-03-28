@@ -3,7 +3,7 @@ const baseUri = 'ipfs://Qmeca8tkLUKBrUCcbK4xvKfL6iXsCNd84s4XYRpQQ6B4ve';
 const description = 'Surge NFTs project';
 
 const layerConfigurations = {
-      items: 1,
+      items: 20,
       layersOrder: [
         { name: 'Background' },
         { name: 'BackHair' },
@@ -33,6 +33,6 @@ const format = {
 const rarityDelimiter = '#';
 const nameSeparator = '-';
 
-const uniqueMetadataTolerance = 100000;
+const uniqueMetadataTolerance = 10000;
 
 module.exports = { layerConfigurations, rarityDelimiter, nameSeparator, uniqueMetadataTolerance, format, description, baseUri}
