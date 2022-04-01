@@ -376,9 +376,9 @@ const isLongBangsWithStraigthWavy = ( _dna = []) => {
 };
 
 // if long bangs in front, they shouldn’t have wagmi earings 
-const isLongBangsWithStraigthWavy = ( _dna = []) => {
+const isLongBangsWithWagmi = ( _dna = []) => {
   if(!_dna.some(e => e.includes("front-hair---long-bangs"))) {
-    return true;
+    return false;
   }
   return _dna.some(e => e.includes("front-hair---long-bangs")) && _dna.some(e => e.includes("earrings---wagmi"));
 };
@@ -422,7 +422,8 @@ const rules = ( _dna = []) => {
       babyCurlsExistsAndApplyRules(_dna) &&
       choppyPixieExistsAndApplyRules(_dna) &&
       tattooExistsAndApplyRules(_dna) &&
-      baseSpiceExistsAndApplyRules(_dna);
+      baseSpiceExistsAndApplyRules(_dna) &&
+      !isLongBangsWithWagmi(_dna);
   };
 // }
   module.exports = { rules }
