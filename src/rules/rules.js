@@ -1,32 +1,32 @@
 // check if back hair, front hair, eyebrows-b match
-// long bangs in salmon, green, blue, and pink may be combined with any color back hair 
+// long bangs in salmon, green, blue, and pink may be combined with black back hair or the same color back hair
 const hairColorsMatch = ( _dna = []) => {
   if(_dna.some(e => e.includes("shaved"))) {
     return true;
   }
     // check if long bangs salmon, green, blue or pink
-    // let frontHairColorCondition = _dna.some(e => e.includes("long-bangs") && (e.includes("salmon") || e.includes("green") || e.includes("blue") || e.includes("pink")));
+    let frontHairColorCondition = _dna.some(e => e.includes("long-bangs") && (e.includes("salmon") || e.includes("green") || e.includes("blue") || e.includes("pink")));
   
     let colors = [];
     // TODO: refactor
-    // if(frontHairColorCondition) {
-    //   _dna.forEach(function(element){
-    //     if (element.includes("back-hair") || element.includes("eyebrows-b") || element.includes("front-hair")){
-    //       // with matching back hair color or “back hair - straight black” or “back hair - wavy black”
-    //       if (!(element.includes("back-hair") && (element.includes("straigth-black") || element.includes("wavy-black")))) {
-    //         const color = element.split('-');
-    //         colors.push(color[color.length - 2]);
-    //       }
-    //     } 
-    //   });
-    // } else {
+    if(frontHairColorCondition) {
+      _dna.forEach(function(element){
+        if (element.includes("back-hair") || element.includes("eyebrows-b") || element.includes("front-hair")){
+          // with matching back hair color or back hair - straight black, back hair - wavy black
+          if (!(element.includes("back-hair") && (element.includes("straigth-black") || element.includes("wavy-black")))) {
+            const color = element.split('-');
+            colors.push(color[color.length - 2]);
+          }
+        } 
+      });
+    } else {
       _dna.forEach(function(element){
         if (element.includes("back-hair") || element.includes("front-hair") || element.includes("eyebrows-b")){
           const color = element.split('-');
           colors.push(color[color.length - 2]);
         }
       });
-    // }
+    }
     return colors.every( (val, i, arr) => val === arr[0] );
   };
   
@@ -85,11 +85,12 @@ const hairColorsMatch = ( _dna = []) => {
   };
   
   // front hair cornrows and back hair small braids cannot be paired with "sand" base
-  const isSandBaseWithCornrowsOrSmallBraids = ( _dna = []) => {
-    if(!_dna.some(e => e.includes("base") && e.includes("sand"))) {
-      return false;
+  //new: any front or back hair with the words "cornrows" or "natural" in it can only be paired with base of color bisque, hazel, or night
+  const isDarkBaseWithCornrowsOrSmallBraids = ( _dna = []) => {
+    if(!_dna.some(e => e.includes("cornrows") || e.includes("back-hair---natural"))) {
+      return true;
     }
-    return _dna.some(e => e.includes("base") && e.includes("sand")) && (_dna.some(e => e.includes("cornrows")) || _dna.some(e => e.includes("small-braids")));
+    return _dna.some(e => e.includes("base") && e.includes("bisque")) || (_dna.some(e => e.includes("base") && e.includes("hazel")) ||  _dna.some(e => e.includes("base") && e.includes("night")));
   };
   
   // front hair - choppy microbangs" can only be paired with "back hair - choppy pixie" usual color rules apply
@@ -164,9 +165,9 @@ const hairColorsMatch = ( _dna = []) => {
     return _dna.some(e => e.includes("shaved")) && (_dna.some(e => e.includes("jewelry-face") && e.includes("bandana")));
   };
 
-  //if there is a tattoo, clothing cannot be "simple tee" or "simple turtleneck" of any color
+  //if there is a tattoo, clothing cannot be "simple tee" or "simple turtleneck" or clothing - ruffle turtleneckof any color
   const isTattooWithSimpleTeeorTurtleneck = ( _dna = []) => {
-    return _dna.some(e => e.includes("tattoos") && (_dna.some(e => e.includes("simple-tee")) || _dna.some(e => e.includes("simple-turtleneck"))));
+    return _dna.some(e => e.includes("tattoos")) && (_dna.some(e => e.includes("simple-tee")) || _dna.some(e => e.includes("simple-turtleneck")) || _dna.some(e => e.includes("ruffle-turtleneck")));
   };
   
   const tattooExistsAndApplyRules = ( _dna = []) => {
@@ -259,31 +260,7 @@ const isHijabWithSolidVeil = ( _dna = []) => {
     return true;
   }
   return _dna.some(e => e.includes("hijab")) && (_dna.some(e => e.includes("back-hair") && e.includes("solid-veil")));
-
-  // if(!_dna.some(e => e.includes("hijab"))) {
-  //   return true;
-  // }
-
-  // let colors = [];
-  // _dna.forEach(function(element){
-  //   if (element.includes("hijab") || (element.includes("back-hair---solid-veil") )){
-  //     const color = element.split('-');
-  //     colors.push(color[color.length - 2]);
-  //   }
-  // });
-
-  // console.log(colors);
-
-  // return colors.every( (val, i, arr) => val === arr[0] );
 };
-
-// // hijab and no jewelry forehead veil
-// const isHijabWithJewelryVeil= ( _dna = []) => {
-//   if(!_dna.some(e => e.includes("hijab"))) {
-//     return false;
-//   }
-//   return _dna.some(e => e.includes("hijab")) && (_dna.some(e => e.includes("jewelry-forehead---veil")));
-// }; 
 
 // "front hair - hijab" can only be paired with "base - full" of any color
 const isHijabWithBaseFull = ( _dna = []) => {
@@ -293,25 +270,151 @@ const isHijabWithBaseFull = ( _dna = []) => {
   return _dna.some(e => e.includes("hijab")) && (_dna.some(e => e.includes("base") && e.includes("full")));
 };
 
+//"front hair - hijab" cannot be paired with "jewelry - forehead" of any kind
+const isHijabWithJewelryForehead = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("hijab"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("hijab")) && (_dna.some(e => e.includes("jewelry-forehead") && !e.includes("none")));
+};
+
+//"front hair - hijab" cannot be paired with "earrings" of any kind
+const isHijabWithEarrings = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("hijab"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("hijab")) && (_dna.some(e => e.includes("earrings") && !e.includes("none")));
+};
+
+//"front hair - hijab" cannot be paired with bandana
+const isHijabWithBandana = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("hijab"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("hijab")) && (_dna.some(e => e.includes("bandana")));
+};
+// no jewelry - forehead with "front hair - shaved"
+const isShavedWithJewelryForehead = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("shaved"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("shaved")) && (_dna.some(e => e.includes("jewelry-forehead") && !e.includes("none")));
+};
+
+
+// cannot combine "front hair - shaved" with "jewelry-face - bandana cute" or "jewelry-face - circlet" or "jewelry-face - tiara circlet" or "jewelry-face - gemstone tiara" or "jewelry-face - cherry blossom crown" of any color
+const isShavedWithJewelryFace= ( _dna = []) => {
+  if(!_dna.some(e => e.includes("shaved"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("shaved")) && (_dna.some(e => e.includes("jewelry-face---bandana-cute")) || _dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---tiara-circlet")) || _dna.some(e => e.includes("jewelry-forehead---gemstone-tiara")) || _dna.some(e => e.includes("jewelry-forehead---cherry")));
+};
+
+
+// no earrings with "jewelry - forehead - veil solid"
+const isEarringsWithJewelryForeheadVeil = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("earrings"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("earrings")) && (_dna.some(e => e.includes("jewelry-forehead---veil-solid")));
+};
+
+// there cannot be more than one layer with the word "glasses" in the title
+const isGlassesMoreThanOne = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("glasses"))) {
+    return false;
+  }
+  return _dna.filter(e => e.includes("glasses")).length > 1;
+};
+
+//"clothing - ruffle turtleneck" of any color cannot be paired with "jewelry - neck - stacked collar" or "jewelry - neck - spiked collar"
+const isRuffleTurtleneckWithJewelryNeckCollar = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("ruffle-turtleneck"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("ruffle-turtleneck")) && (_dna.some(e => e.includes("jewelry-neck---stacked-collar")) || _dna.some(e => e.includes("jewelry-neck---spiked-collar")));
+};
+
+//"jewelry - face - snake bites" cannot be paired with "mouth - full smile"
+const isSnakeBitesWithFullSmile = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("jewelry-face---gold-snake-bites"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("jewelry-neck---snake-bites")) && (_dna.some(e => e.includes("mouth---full-smile")));
+};
+
+// "front hair - pushed back" cannot be paired with "back hair - loose curls"
+const isPushedBackWithLooseCurls = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("front-hair---pushed-back"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("front-hair---pushed-back")) && (_dna.some(e => e.includes("back-hair---loose-curls")));
+};
+
+// "front hair - messy bangs" cannot be paired with "back hair - thick braids" or "back hair - tall pony" or "back hair - low pigtails" or "back hair - high pigtails"
+const isMessyBangsWithJBackHairVariants = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("front-hair--messy-bangs"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("front-hair--bangs-messy")) && (_dna.some(e => e.includes("back-hair---thick-braids")) || _dna.some(e => e.includes("back-hair---tall-pony")) || _dna.some(e => e.includes("back-hair---low-pigtails")) || _dna.some(e => e.includes("back-hair---high-pigtails")));
+};
+
+// "front hair - hijab" must be paired with "clothing - simple tee" or "clothing - simple turtleneck"
+const isHijabWithSimpleClothing = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("hijab"))) {
+    return true;
+  }
+  return _dna.some(e => e.includes("hijab")) && (_dna.some(e => e.includes("simple")) || _dna.some(e => e.includes("simple-turtleneck")));
+};
+
+// "front hair - long bangs" can only be paired with "back hair - straight" or "back hair - wavy"
+const isLongBangsWithStraigthWavy = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("front-hair---long-bangs"))) {
+    return true;
+  }
+  return _dna.some(e => e.includes("front-hair---long-bangs")) && (_dna.some(e => e.includes("back-hair---straight")) || _dna.some(e => e.includes("back-hair---wavy")));
+};
+
+// if long bangs in front, they shouldn’t have wagmi earings 
+const isLongBangsWithStraigthWavy = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("front-hair---long-bangs"))) {
+    return true;
+  }
+  return _dna.some(e => e.includes("front-hair---long-bangs")) && _dna.some(e => e.includes("earrings---wagmi"));
+};
+
 // rules
 const rules = ( _dna = []) => {
+  // if (_dna.some(e => e.includes("hijab"))) {
     return hairColorsMatch(_dna) &&
       !areLongBangsWithVeilJewelry(_dna) &&
-    //  !isHijabWithJewelryVeil(_dna) &&
       isHijabWithSolidVeil(_dna) &&
       isHijabWithBaseFull(_dna) &&
+      !isHijabWithJewelryForehead(_dna) &&
+      !isHijabWithEarrings(_dna) &&
+      isHijabWithSimpleClothing(_dna) &&
+      !isHijabWithBandana(_dna) &&
+      !isGlassesMoreThanOne(_dna) &&
+      isLongBangsWithStraigthWavy(_dna) &&
+      !isShavedWithJewelryForehead(_dna) &&
+      !isShavedWithJewelryFace(_dna) &&
+      !isRuffleTurtleneckWithJewelryNeckCollar(_dna) &&
+      !isSnakeBitesWithFullSmile(_dna) &&
+      !isPushedBackWithLooseCurls(_dna) &&
+      !isMessyBangsWithJBackHairVariants(_dna) &&
       backHairSolidVeilExistsAndApplyRules(_dna) &&
       foreheadVeilExistsAndApplyRules(_dna) &&
       !areLongBangsWithNaturalBlackHair(_dna) &&
       !areJewelrySnakeBitesWithFullMouthRedHazelnut(_dna) &&
       isShavedHeadWithBackHair(_dna) &&
+      !isEarringsWithJewelryForeheadVeil(_dna) &&
       !isJewelryFaceWithJewelryForehead(_dna) &&
       !isShavedHeadWithBandana(_dna) &&
       !isNecklaceWagmiAndNecklaceRibbon(_dna) &&
       !isNecklaceCollarAndBlank(_dna) &&
       !isNecklaceRibbonAndBlank(_dna) &&
       !isJewelryNeckWithSimpleTurtleneck(_dna) &&
-      !isSandBaseWithCornrowsOrSmallBraids(_dna) &&
+      isDarkBaseWithCornrowsOrSmallBraids(_dna) &&
       cornrowsExistsAndApplyRules(_dna) &&
       naturalBlackExistsAndApplyRules(_dna) &&
       choppyExistsAndApplyRules(_dna) &&
@@ -321,5 +424,5 @@ const rules = ( _dna = []) => {
       tattooExistsAndApplyRules(_dna) &&
       baseSpiceExistsAndApplyRules(_dna);
   };
-
+// }
   module.exports = { rules }

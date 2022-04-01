@@ -3,7 +3,7 @@ const baseUri = 'ipfs://Qmeca8tkLUKBrUCcbK4xvKfL6iXsCNd84s4XYRpQQ6B4ve';
 const description = 'Surge NFTs project';
 
 const layerConfigurations = {
-      items: 20,
+      items: 2500,
       layersOrder: [
         { name: 'Background' },
         { name: 'BackHair' },
@@ -14,9 +14,9 @@ const layerConfigurations = {
         { name: 'Blush' },
         { name: 'Clothing' },
         { name: 'Earrings' },
-        { name: 'JewelryFace' },
-        { name: 'JewelryFace' },
         { name: 'Eyes' },
+        { name: 'JewelryFace' },
+        { name: 'JewelryFace' },
         { name: 'Eyebrows' },
         { name: 'JewelryNeck' },
         { name: 'JewelryNeck' },
@@ -33,6 +33,6 @@ const format = {
 const rarityDelimiter = '#';
 const nameSeparator = '-';
 
-const uniqueMetadataTolerance = 10000;
+const uniqueMetadataTolerance = 10000000;
 
 module.exports = { layerConfigurations, rarityDelimiter, nameSeparator, uniqueMetadataTolerance, format, description, baseUri}
