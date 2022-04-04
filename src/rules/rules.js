@@ -5,28 +5,28 @@ const hairColorsMatch = ( _dna = []) => {
     return true;
   }
     // check if long bangs salmon, green, blue or pink
-    let frontHairColorCondition = _dna.some(e => e.includes("long-bangs") && (e.includes("salmon") || e.includes("green") || e.includes("blue") || e.includes("pink")));
+    // let frontHairColorCondition = _dna.some(e => e.includes("long-bangs") && (e.includes("salmon") || e.includes("green") || e.includes("blue") || e.includes("pink")));
   
     let colors = [];
     // TODO: refactor
-    if(frontHairColorCondition) {
-      _dna.forEach(function(element){
-        if (element.includes("back-hair") || element.includes("eyebrows-b") || element.includes("front-hair")){
-          // with matching back hair color or back hair - straight black, back hair - wavy black
-          if (!(element.includes("back-hair") && (element.includes("straigth-black") || element.includes("wavy-black")))) {
-            const color = element.split('-');
-            colors.push(color[color.length - 2]);
-          }
-        } 
-      });
-    } else {
+    // if(frontHairColorCondition) {
+    //   _dna.forEach(function(element){
+    //     if (element.includes("back-hair") || element.includes("eyebrows-b") || element.includes("front-hair")){
+    //       // with matching back hair color or back hair - straight black, back hair - wavy black
+    //       if (!(element.includes("back-hair") && (element.includes("straigth-black") || element.includes("wavy-black")))) {
+    //         const color = element.split('-');
+    //         colors.push(color[color.length - 2]);
+    //       }
+    //     } 
+    //   });
+    // } else {
       _dna.forEach(function(element){
         if (element.includes("back-hair") || element.includes("front-hair") || element.includes("eyebrows-b")){
           const color = element.split('-');
           colors.push(color[color.length - 2]);
         }
       });
-    }
+    // }
     return colors.every( (val, i, arr) => val === arr[0] );
   };
   
@@ -62,7 +62,7 @@ const hairColorsMatch = ( _dna = []) => {
   
   //back hair - natural black must be paired with "front hair - cornrows" or "front hair - baby curls"
   const isNaturalBlackWithCornRowsOrBabyCurls = ( _dna = []) => {
-    return _dna.some(e => e.includes("natural-black")) && (_dna.some(e => e.includes("cornrows")) || _dna.some(e => e.includes("baby curls")));
+    return _dna.some(e => e.includes("natural-black")) && (_dna.some(e => e.includes("cornrows")) || _dna.some(e => e.includes("baby-curls")));
   };
   
   const naturalBlackExistsAndApplyRules = ( _dna = []) => {
@@ -383,9 +383,24 @@ const isLongBangsWithWagmi = ( _dna = []) => {
   return _dna.some(e => e.includes("front-hair---long-bangs")) && _dna.some(e => e.includes("earrings---wagmi"));
 };
 
+// if high pigtails, no bandana or jewelry forehead
+const isPigtailsWitForehead= ( _dna = []) => {
+  if(!_dna.some(e => e.includes("back-hair---high-pigtails"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("back-hair---high-pigtails")) && (_dna.some(e => e.includes("bandana")) || _dna.some(e => e.includes("jewelry-forehead") && !e.includes("none")));
+};
+
+// if bandana or jewelry forehead
+const isBandanaWithForehead = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("bandana"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("bandana")) && ( _dna.some(e => e.includes("jewelry-forehead") && !e.includes("none")));
+};
+
 // rules
 const rules = ( _dna = []) => {
-  // if (_dna.some(e => e.includes("hijab"))) {
     return hairColorsMatch(_dna) &&
       !areLongBangsWithVeilJewelry(_dna) &&
       isHijabWithSolidVeil(_dna) &&
@@ -423,7 +438,8 @@ const rules = ( _dna = []) => {
       choppyPixieExistsAndApplyRules(_dna) &&
       tattooExistsAndApplyRules(_dna) &&
       baseSpiceExistsAndApplyRules(_dna) &&
-      !isLongBangsWithWagmi(_dna);
-  };
-// }
+      !isLongBangsWithWagmi(_dna) &&
+      !isPigtailsWitForehead(_dna) &&
+      !isBandanaWithForehead(_dna);
+}
   module.exports = { rules }
