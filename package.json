@@ -6,7 +6,9 @@
   "scripts": {
     "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "convert": "./convertPNG24toPNG8"
+    "convert": "./convertPNG24toPNG8",
+    "update" : "node utils/update_metadata.js"
+
   },
   "author": "Ringaile Valiaugaite",
   "license": "ISC",

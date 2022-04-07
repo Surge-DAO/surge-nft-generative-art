@@ -10,7 +10,7 @@ npm install
 
 ## How to configure
 
-All the configuration can be found in src/config.file
+All the configuration can be found in src/config.js
 
 To change the matadata uri:
 ```
@@ -35,6 +35,17 @@ npm install
 
 ```
 npm run start
+```
+
+## Update metadata URI
+
+Change the matadata uri in src/config.js:
+```
+const baseUri = 'ipfs://';
+`
+
+```
+npm run update
 ```
 
 ## Useful Info

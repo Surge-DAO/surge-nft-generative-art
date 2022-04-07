@@ -90,7 +90,7 @@ const hairColorsMatch = ( _dna = []) => {
     if(!_dna.some(e => e.includes("cornrows") || e.includes("back-hair---natural"))) {
       return true;
     }
-    return _dna.some(e => e.includes("base") && e.includes("bisque")) || (_dna.some(e => e.includes("base") && e.includes("hazel")) ||  _dna.some(e => e.includes("base") && e.includes("night")));
+    return _dna.some(e => e.includes("base") && e.includes("spice")) || (_dna.some(e => e.includes("base") && e.includes("hazel")) ||  _dna.some(e => e.includes("base") && e.includes("night")));
   };
   
   // front hair - choppy microbangs" can only be paired with "back hair - choppy pixie" usual color rules apply
@@ -384,7 +384,7 @@ const isLongBangsWithWagmi = ( _dna = []) => {
 };
 
 // if high pigtails, no bandana or jewelry forehead
-const isPigtailsWitForehead= ( _dna = []) => {
+const isPigtailsWitForehead = ( _dna = []) => {
   if(!_dna.some(e => e.includes("back-hair---high-pigtails"))) {
     return false;
   }
@@ -399,6 +399,54 @@ const isBandanaWithForehead = ( _dna = []) => {
   return _dna.some(e => e.includes("bandana")) && ( _dna.some(e => e.includes("jewelry-forehead") && !e.includes("none")));
 };
 
+// no black earrings with black long bangs
+const isBlackEarringsWitBlackLongBangs = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("back-hair---long-bangs-black"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("back-hair---long-bangs-black")) && _dna.some(e => e.includes("earrings") && e.includes("black"));
+};
+
+// no forehead jewelry with straight bangs
+const isForeheadJewelryWithStraightBangs = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("back-hair---bangs-straight"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("back-hair---bangs-straight")) && _dna.some(e => e.includes("jewelry-forehead") && !e.includes("none"));
+};
+
+// no long bangs and 1001 earrings
+const is1001EarringsWithLongBangs = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("back-hair---long-bangs"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("back-hair---long-bangs")) && _dna.some(e => e.includes("earrings") && e.includes("numbers"));
+};
+
+// no double wagmi
+const isWagmiEarringsWithWagmiNecklace = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("earrings---wagmi"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("earrings---wagmi")) && _dna.some(e => e.includes("jewelry-neck---wagmi"));
+};
+
+// no other headpiece with eth
+const isEthWithHeadpiece = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("jewelry-face---forehead-crystal"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("jewelry-face---forehead-crystal")) && (_dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---lotus")) || _dna.some(e => e.includes("jewelry-face---tiara")));
+};
+
+// no straight bangs with eth
+const isEthWithStraigthBangs = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("jewelry-face---forehead-crystal"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("jewelry-face---forehead-crystal")) && _dna.some(e => e.includes("front-hair---bangs-straight"));
+};
+
 // rules
 const rules = ( _dna = []) => {
     return hairColorsMatch(_dna) &&
@@ -411,12 +459,17 @@ const rules = ( _dna = []) => {
       !isHijabWithBandana(_dna) &&
       !isGlassesMoreThanOne(_dna) &&
       isLongBangsWithStraigthWavy(_dna) &&
+      !is1001EarringsWithLongBangs(_dna) &&
       !isShavedWithJewelryForehead(_dna) &&
       !isShavedWithJewelryFace(_dna) &&
       !isRuffleTurtleneckWithJewelryNeckCollar(_dna) &&
       !isSnakeBitesWithFullSmile(_dna) &&
       !isPushedBackWithLooseCurls(_dna) &&
       !isMessyBangsWithJBackHairVariants(_dna) &&
+      !isBlackEarringsWitBlackLongBangs(_dna) &&
+      !isEthWithHeadpiece(_dna) &&
+      !isEthWithStraigthBangs(_dna) &&
+      !isWagmiEarringsWithWagmiNecklace(_dna) &&
       backHairSolidVeilExistsAndApplyRules(_dna) &&
       foreheadVeilExistsAndApplyRules(_dna) &&
       !areLongBangsWithNaturalBlackHair(_dna) &&
@@ -429,6 +482,7 @@ const rules = ( _dna = []) => {
       !isNecklaceCollarAndBlank(_dna) &&
       !isNecklaceRibbonAndBlank(_dna) &&
       !isJewelryNeckWithSimpleTurtleneck(_dna) &&
+      !isForeheadJewelryWithStraightBangs(_dna) &&
       isDarkBaseWithCornrowsOrSmallBraids(_dna) &&
       cornrowsExistsAndApplyRules(_dna) &&
       naturalBlackExistsAndApplyRules(_dna) &&
