@@ -1,5 +1,5 @@
 // add base URI 
-const baseUri = 'ipfs://Qmeca8tkLUKBrUCcbK4xvKfL6iXsCNd84s4XYRpQQ6B4ve';
+const baseUri = 'ipfs://QmVinWsPn6itUMx6GstbWYqBkCVhJGeG5Xh8wRdUf5WJcK';
 const description = 'Surge NFTs project';
 
 const layerConfigurations = {
