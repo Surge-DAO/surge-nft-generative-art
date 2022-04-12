@@ -87,7 +87,7 @@ const hairColorsMatch = ( _dna = []) => {
   // front hair cornrows and back hair small braids cannot be paired with "sand" base
   //new: any front or back hair with the words "cornrows" or "natural" in it can only be paired with base of color bisque, hazel, or night
   const isDarkBaseWithCornrowsOrSmallBraids = ( _dna = []) => {
-    if(!_dna.some(e => e.includes("cornrows") || e.includes("back-hair---natural"))) {
+    if(!_dna.some(e => e.includes("cornrows") || e.includes("back-hair---natural") || e.includes("small-braids"))){
       return true;
     }
     return _dna.some(e => e.includes("base") && e.includes("spice")) || (_dna.some(e => e.includes("base") && e.includes("hazel")) ||  _dna.some(e => e.includes("base") && e.includes("night")));
@@ -182,7 +182,7 @@ const hairColorsMatch = ( _dna = []) => {
     if(!_dna.some(e => e.includes("simple-turtleneck"))) {
       return false;
     }
-    return _dna.some(e => e.includes("jewelry-neck") && (e.includes("wagmi") || e.includes("collar") || e.includes("ribbon") || e.includes("layered") || e.includes("chain")) && (_dna.some(e => e.includes("simple-turtleneck"))));
+    return _dna.some(e => e.includes("jewelry-neck") && (e.includes("wagmi") || e.includes("collar") || e.includes("ribbon") || e.includes("layered") || e.includes("chain") || e.includes("BTC")) && (_dna.some(e => e.includes("simple-turtleneck"))));
   };
 
   //base - spice of any shape may not be combined with any hairstyle with "brown" in its name
@@ -377,10 +377,10 @@ const isLongBangsWithStraigthWavy = ( _dna = []) => {
 
 // if long bangs in front, they shouldn’t have wagmi earings 
 const isLongBangsWithWagmi = ( _dna = []) => {
-  if(!_dna.some(e => e.includes("front-hair---long-bangs"))) {
+  if(!_dna.some(e => e.includes("earrings---wagmi"))) {
     return false;
   }
-  return _dna.some(e => e.includes("front-hair---long-bangs")) && _dna.some(e => e.includes("earrings---wagmi"));
+  return (_dna.some(e => e.includes("front-hair---long-bangs")) || _dna.some(e => e.includes("front-hair---bangs-straight"))) && _dna.some(e => e.includes("earrings---wagmi"));
 };
 
 // if high pigtails, no bandana or jewelry forehead
@@ -409,18 +409,50 @@ const isBlackEarringsWitBlackLongBangs = ( _dna = []) => {
 
 // no forehead jewelry with straight bangs
 const isForeheadJewelryWithStraightBangs = ( _dna = []) => {
-  if(!_dna.some(e => e.includes("back-hair---bangs-straight"))) {
+  if(!_dna.some(e => e.includes("front-hair---bangs-straight"))) {
     return false;
   }
-  return _dna.some(e => e.includes("back-hair---bangs-straight")) && _dna.some(e => e.includes("jewelry-forehead") && !e.includes("none"));
+  return _dna.some(e => e.includes("front-hair---bangs-straight")) && (_dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---eyebrow")) || _dna.some(e => e.includes("jewelry-face---lotus")) || _dna.some(e => e.includes("jewelry-face---tiara")));
+};
+
+// no forehead jewelry with messy bangs
+const isForeheadJewelryWithMessyBangs = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("front-hair---bangs-messy"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("front-hair---bangs-messy")) && (_dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---eyebrow")) || _dna.some(e => e.includes("jewelry-face---lotus")) || _dna.some(e => e.includes("jewelry-face---tiara")));
+};
+
+// no forehead jewelry with choppy bangs
+const isForeheadJewelryWithChoppyBangs = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("front-hair---choppy"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("front-hair---choppy")) && (_dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---eyebrow")) || _dna.some(e => e.includes("jewelry-face---lotus")) || _dna.some(e => e.includes("jewelry-face---tiara")));
+};
+
+// no stud earrings with straight bangs side
+const isStudEarringsWithStraightBangs = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("front-hair---bangs-straight-side"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("front-hair---bangs-straight-side")) && _dna.some(e => e.includes("earrings---gold"));
+};
+
+// no btc earrings with straight bangs side
+const isBitcoinEarringsWithStraightBangs = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("front-hair---bangs-straight-side"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("front-hair---bangs-straight-side")) && _dna.some(e => e.includes("earrings---BTC"));
 };
 
 // no long bangs and 1001 earrings
 const is1001EarringsWithLongBangs = ( _dna = []) => {
-  if(!_dna.some(e => e.includes("back-hair---long-bangs"))) {
+  if(!_dna.some(e => e.includes("front-hair---bangs-straight-side"))) {
     return false;
   }
-  return _dna.some(e => e.includes("back-hair---long-bangs")) && _dna.some(e => e.includes("earrings") && e.includes("numbers"));
+  return _dna.some(e => e.includes("front-hair---bangs-straight-side")) && _dna.some(e => e.includes("earrings") && e.includes("numbers"));
 };
 
 // no double wagmi
@@ -444,7 +476,88 @@ const isEthWithStraigthBangs = ( _dna = []) => {
   if(!_dna.some(e => e.includes("jewelry-face---forehead-crystal"))) {
     return false;
   }
-  return _dna.some(e => e.includes("jewelry-face---forehead-crystal")) && _dna.some(e => e.includes("front-hair---bangs-straight"));
+  return _dna.some(e => e.includes("jewelry-face---forehead-crystal")) && (_dna.some(e => e.includes("front-hair---bangs-straight")) || _dna.some(e => e.includes("front-hair---bangs-messy")));
+};
+
+// jewelry-neck---stacked-collar (all colors) cannot appear jewelry-neck---spiked-collar (all colors)
+ // maximum two necklaces and can only be combined with following permitted combinations:
+//  jewelry-neck - lock and jewelry - neck - spiked collar
+//  jewelry- neck - lock and jewelry - neck - stacked collar
+//  jewelry - neck - lock and jewelry - neck - wagmi collar
+//  jewelry - neck - layered jeweled necklaces and jewelry - neck - spiked collar
+
+
+const isJewelryNeckAllowed = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("jewelry-neck") && !e.includes("none"))) {
+    return true;
+  }
+
+  if(_dna.filter(e => e.includes("jewelry-neck") && !e.includes("none")).length < 2){
+    return true;
+  }
+
+  return (_dna.some(e => e.includes("jewelry-neck") && e.includes("lock")) && _dna.some(e => e.includes("jewelry-neck-spiked-collar"))) ||
+  (_dna.some(e => e.includes("jewelry-neck") && e.includes("lock")) && _dna.some(e => e.includes("jewelry-neck-stacked-collar"))) ||
+  (_dna.some(e => e.includes("jewelry-neck") && e.includes("lock")) && _dna.some(e => e.includes("jewelry-neck-wagmi-collar"))) ||
+  (_dna.some(e => e.includes("jewelry-neck") && e.includes("layered")) && _dna.some(e => e.includes("jewelry-neck-spiked-collar")));
+};
+
+// no headpiece with bangs messy
+const isJewelryFaceWithMessyBangs = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("front-hair--bangs-messy"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("front-hair--bangs-messy")) && (_dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---eyebrow")) || _dna.some(e => e.includes("jewelry-face---lotus")) || _dna.some(e => e.includes("jewelry-face---tiara")));
+};
+
+// no asymetric clothing with delicate necklace
+const isJewelryDelicateWithAsymetricalClothing = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("clothing---asymetrical"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("clothing---asymetrical")) && _dna.some(e => e.includes("jewelry-neck---delicate"));
+};
+
+// no two tiaras
+const isTiarasMoreThanOne = ( _dna = []) => {
+  if(!(_dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---lotus")) || _dna.some(e => e.includes("jewelry-face---tiara")))) {
+    return false;
+  }
+  if(_dna.filter(e => e.includes("jewelry-face---circlet")).length > 1) {
+    return true;
+  }
+  if(_dna.filter(e => e.includes("jewelry-face---lotus")).length > 1) {
+    return true;
+  }
+  if(_dna.filter(e => e.includes("jewelry-face---tiara")).length > 1) {
+    return true;
+  }
+  if(_dna.filter(e => e.includes("jewelry-face---circlet")) && _dna.filter(e => e.includes("jewelry-face---lotus"))) {
+    return true;
+  }
+  if(_dna.filter(e => e.includes("jewelry-face---circlet")) && _dna.filter(e => e.includes("jewelry-face---tiara"))) {
+    return true;
+  }
+  if(_dna.filter(e => e.includes("jewelry-face---tiara")) && _dna.filter(e => e.includes("jewelry-face---lotus"))) {
+    return true;
+  }
+  return false;
+};
+
+// no lotus with tiara
+const isLotusWithTiara = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("lotus"))) {
+    return false;
+  }
+  return _dna.filter(e => e.includes("jewelry-face---lotus")) && (_dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---lotus")) || _dna.some(e => e.includes("jewelry-face---tiara")) || _dna.some(e => e.includes("jewelry-face---forehead-crystal")) )
+};
+
+// no crystal with tiara
+const isCrystalWithTiara = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("crystal"))) {
+    return false;
+  }
+  return _dna.filter(e => e.includes("jewelry-face---forehead-crystal")) && (_dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---lotus")) || _dna.some(e => e.includes("jewelry-face---tiara")) || _dna.some(e => e.includes("jewelry-face---lotus")) )
 };
 
 // rules
@@ -494,6 +607,16 @@ const rules = ( _dna = []) => {
       baseSpiceExistsAndApplyRules(_dna) &&
       !isLongBangsWithWagmi(_dna) &&
       !isPigtailsWitForehead(_dna) &&
-      !isBandanaWithForehead(_dna);
+      !isBandanaWithForehead(_dna) &&
+      !isJewelryFaceWithMessyBangs(_dna) &&
+      !isJewelryDelicateWithAsymetricalClothing(_dna) &&
+      isJewelryNeckAllowed(_dna) &&
+      !isStudEarringsWithStraightBangs(_dna) &&
+      !isBitcoinEarringsWithStraightBangs(_dna) &&
+      !isForeheadJewelryWithMessyBangs(_dna) &&
+      !isForeheadJewelryWithChoppyBangs(_dna) &&
+      !isTiarasMoreThanOne(_dna) && 
+      !isLotusWithTiara(_dna) &&
+      !isCrystalWithTiara(_dna);
 }
   module.exports = { rules }

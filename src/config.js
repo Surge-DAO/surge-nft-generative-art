@@ -3,7 +3,7 @@ const baseUri = 'ipfs://QmVinWsPn6itUMx6GstbWYqBkCVhJGeG5Xh8wRdUf5WJcK';
 const description = 'Surge NFTs project';
 
 const layerConfigurations = {
-      items: 10,
+      items: 1,
       layersOrder: [
         { name: 'Background' },
         { name: 'BackHair' },

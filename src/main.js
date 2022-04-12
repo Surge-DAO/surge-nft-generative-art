@@ -7,6 +7,7 @@ const {
 } = require("./config.js");
 
 const { rules } = require("./rules/rules.js");
+const { isDarkSkinLightHairBelow } = require("./combos/combos.js");
 const { saveImage8bits } = require("./images/images8bit.js");
 const { loadLayerImage, drawElement, saveImage24bits } = require("./images/images24bit.js");
 const { generateMetadata, saveMetadata } = require("./metadata/metadata.js");
@@ -33,7 +34,7 @@ const run = async () => {
     // create images and metadata
     while ( noOfItem <= layerConfigurations.items) {
         let item = createItem(layers);
-        if (isItemUnique(itemList, item) && rules(item)) {
+        if (isItemUnique(itemList, item) && rules(item) && isDarkSkinLightHairBelow(itemList, item)) {
 
             let results = itemToLayers(item, layers);
             let loadedElements = [];
