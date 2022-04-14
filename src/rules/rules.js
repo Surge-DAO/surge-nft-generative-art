@@ -178,12 +178,12 @@ const hairColorsMatch = ( _dna = []) => {
   };
 
   // "jewelry - neck" of any color cannot be combined with "clothing - simple turtleneck" of any color
-  const isJewelryNeckWithSimpleTurtleneck = ( _dna = []) => {
-    if(!_dna.some(e => e.includes("simple-turtleneck"))) {
-      return false;
-    }
-    return _dna.some(e => e.includes("jewelry-neck") && (e.includes("wagmi") || e.includes("collar") || e.includes("ribbon") || e.includes("layered") || e.includes("chain") || e.includes("BTC")) && (_dna.some(e => e.includes("simple-turtleneck"))));
-  };
+  // const isJewelryNeckWithSimpleTurtleneck = ( _dna = []) => {
+  //   if(!_dna.some(e => e.includes("simple-turtleneck"))) {
+  //     return false;
+  //   }
+  //   return _dna.some(e => e.includes("jewelry-neck") && (e.includes("wagmi") || e.includes("collar") || e.includes("ribbon") || e.includes("layered") || e.includes("chain") || e.includes("BTC")) && (_dna.some(e => e.includes("simple-turtleneck"))));
+  // };
 
   //base - spice of any shape may not be combined with any hairstyle with "brown" in its name
   const isBaseSpiceWithBrownHairstyle = ( _dna = []) => {
@@ -449,10 +449,10 @@ const isBitcoinEarringsWithStraightBangs = ( _dna = []) => {
 
 // no long bangs and 1001 earrings
 const is1001EarringsWithLongBangs = ( _dna = []) => {
-  if(!_dna.some(e => e.includes("front-hair---bangs-straight-side"))) {
+  if(!(_dna.some(e => e.includes("front-hair---bangs-straight-side")) || _dna.some(e => e.includes("front-hair---long-bangs")))) {
     return false;
   }
-  return _dna.some(e => e.includes("front-hair---bangs-straight-side")) && _dna.some(e => e.includes("earrings") && e.includes("numbers"));
+  return (_dna.some(e => e.includes("front-hair---bangs-straight-side")) || _dna.some(e => e.includes("front-hair---long-bangs"))) && _dna.some(e => e.includes("earrings") && e.includes("numbers"));
 };
 
 // no double wagmi
@@ -560,8 +560,41 @@ const isCrystalWithTiara = ( _dna = []) => {
   return _dna.filter(e => e.includes("jewelry-face---forehead-crystal")) && (_dna.some(e => e.includes("jewelry-face---circlet")) || _dna.some(e => e.includes("jewelry-face---lotus")) || _dna.some(e => e.includes("jewelry-face---tiara")) || _dna.some(e => e.includes("jewelry-face---lotus")) )
 };
 
+// “full” and “round” type bases cannot go with the big hoop earrings and the studded hoop earrings
+const isBaseOrRoundWithHoopEarrings = ( _dna = []) => {
+  if(!(_dna.some(e => e.includes("base") && (e.includes("full") || e.includes("round"))))) {
+    return false;
+  }
+  return (_dna.some(e => e.includes("base") && (e.includes("full") || e.includes("round")))) && (_dna.some(e => e.includes("earrings---large-skinny-hoops")) || _dna.some(e => e.includes("earrings---large-studded-hoops")))
+};
+
+// if glasses before stars on face
+const isSparkleBeforeGlasses = ( _dna = []) => {
+  if(!(_dna.some(e => e.includes("jewelry-face---glasses") && (e.includes("jewelry-face---sparkle"))))) {
+    return true;
+  }
+  return _dna.findIndex(element => element.includes("jewelry-face---sparkle")) < _dna.findIndex(element => element.includes("jewelry-face---glasses"))
+};
+
+// No lip piercings with hijab please
+const isHijabWithPiercing = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("hijab"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("hijab")) && (_dna.some(e => e.includes("jewelry-face---septum")) || _dna.some(e => e.includes("jewelry-face---high-nose")) || _dna.some(e => e.includes("jewelry-face---nostril")) || _dna.some(e => e.includes("jewelry-face---gold-snake")) || _dna.some(e => e.includes("jewelry-face---eyebrow-piercings")));
+};
+
+// No blue background w blue burqa pls
+const isBlueBackgroundWithBlueHijab = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("hiijab"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("hijab")) && _dna.some(e => e.includes("background-color---pale-blue"));
+};
+
 // rules
 const rules = ( _dna = []) => {
+  // if(_dna.some(e => e.includes("pink") && e.includes("hair"))) {
     return hairColorsMatch(_dna) &&
       !areLongBangsWithVeilJewelry(_dna) &&
       isHijabWithSolidVeil(_dna) &&
@@ -570,6 +603,7 @@ const rules = ( _dna = []) => {
       !isHijabWithEarrings(_dna) &&
       isHijabWithSimpleClothing(_dna) &&
       !isHijabWithBandana(_dna) &&
+      !isHijabWithPiercing(_dna) &&
       !isGlassesMoreThanOne(_dna) &&
       isLongBangsWithStraigthWavy(_dna) &&
       !is1001EarringsWithLongBangs(_dna) &&
@@ -594,7 +628,7 @@ const rules = ( _dna = []) => {
       !isNecklaceWagmiAndNecklaceRibbon(_dna) &&
       !isNecklaceCollarAndBlank(_dna) &&
       !isNecklaceRibbonAndBlank(_dna) &&
-      !isJewelryNeckWithSimpleTurtleneck(_dna) &&
+      // !isJewelryNeckWithSimpleTurtleneck(_dna) &&
       !isForeheadJewelryWithStraightBangs(_dna) &&
       isDarkBaseWithCornrowsOrSmallBraids(_dna) &&
       cornrowsExistsAndApplyRules(_dna) &&
@@ -617,6 +651,10 @@ const rules = ( _dna = []) => {
       !isForeheadJewelryWithChoppyBangs(_dna) &&
       !isTiarasMoreThanOne(_dna) && 
       !isLotusWithTiara(_dna) &&
-      !isCrystalWithTiara(_dna);
+      !isCrystalWithTiara(_dna) &&
+      !isBaseOrRoundWithHoopEarrings(_dna) &&
+      isSparkleBeforeGlasses(_dna) &&
+      !isBlueBackgroundWithBlueHijab(_dna);
+  // }
 }
   module.exports = { rules }
