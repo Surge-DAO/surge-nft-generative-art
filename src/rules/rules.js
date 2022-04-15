@@ -570,7 +570,7 @@ const isBaseOrRoundWithHoopEarrings = ( _dna = []) => {
 
 // if glasses before stars on face
 const isSparkleBeforeGlasses = ( _dna = []) => {
-  if(!(_dna.some(e => e.includes("jewelry-face---glasses") && (e.includes("jewelry-face---sparkle"))))) {
+  if(!(_dna.some(e => e.includes("jewelry-face---glasses")) && _dna.some(e => e.includes("jewelry-face---sparkles")))) {
     return true;
   }
   return _dna.findIndex(element => element.includes("jewelry-face---sparkle")) < _dna.findIndex(element => element.includes("jewelry-face---glasses"))
@@ -586,15 +586,18 @@ const isHijabWithPiercing = ( _dna = []) => {
 
 // No blue background w blue burqa pls
 const isBlueBackgroundWithBlueHijab = ( _dna = []) => {
-  if(!_dna.some(e => e.includes("hiijab"))) {
+  if(!_dna.some(e => e.includes("hijab"))) {
     return false;
   }
   return _dna.some(e => e.includes("hijab")) && _dna.some(e => e.includes("background-color---pale-blue"));
 };
 
+
+
 // rules
 const rules = ( _dna = []) => {
-  // if(_dna.some(e => e.includes("pink") && e.includes("hair"))) {
+  // if((_dna.some(e => e.includes("jewelry-face---glasses")) && _dna.some(e => e.includes("jewelry-face---sparkles")))) {
+    
     return hairColorsMatch(_dna) &&
       !areLongBangsWithVeilJewelry(_dna) &&
       isHijabWithSolidVeil(_dna) &&
