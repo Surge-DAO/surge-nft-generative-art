@@ -592,7 +592,13 @@ const isBlueBackgroundWithBlueHijab = ( _dna = []) => {
   return _dna.some(e => e.includes("hijab")) && _dna.some(e => e.includes("background-color---pale-blue"));
 };
 
-
+// no black hair with studded noops black
+const isBlackHairWithBlackStuddedHoops = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("earrings---studded-hoops-black"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("earrings---studded-hoops-black")) && _dna.some(e => e.includes("back-hair") && e.includes("black"));
+};
 
 // rules
 const rules = ( _dna = []) => {
@@ -657,7 +663,8 @@ const rules = ( _dna = []) => {
       !isCrystalWithTiara(_dna) &&
       !isBaseOrRoundWithHoopEarrings(_dna) &&
       isSparkleBeforeGlasses(_dna) &&
-      !isBlueBackgroundWithBlueHijab(_dna);
+      !isBlueBackgroundWithBlueHijab(_dna) &&
+      !isBlackHairWithBlackStuddedHoops(_dna);
   // }
 }
   module.exports = { rules }
