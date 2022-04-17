@@ -476,7 +476,7 @@ const isEthWithStraigthBangs = ( _dna = []) => {
   if(!_dna.some(e => e.includes("jewelry-face---forehead-crystal"))) {
     return false;
   }
-  return _dna.some(e => e.includes("jewelry-face---forehead-crystal")) && (_dna.some(e => e.includes("front-hair---bangs-straight")) || _dna.some(e => e.includes("front-hair---bangs-messy")));
+  return _dna.some(e => e.includes("jewelry-face---forehead-crystal")) && (_dna.some(e => e.includes("front-hair---bangs-straight")) || _dna.some(e => e.includes("front-hair---bangs-messy")) || _dna.some(e => e.includes("front-hair---choppy-microbangs")) );
 };
 
 // jewelry-neck---stacked-collar (all colors) cannot appear jewelry-neck---spiked-collar (all colors)
@@ -565,7 +565,7 @@ const isBaseOrRoundWithHoopEarrings = ( _dna = []) => {
   if(!(_dna.some(e => e.includes("base") && (e.includes("full") || e.includes("round"))))) {
     return false;
   }
-  return (_dna.some(e => e.includes("base") && (e.includes("full") || e.includes("round")))) && (_dna.some(e => e.includes("earrings---large-skinny-hoops")) || _dna.some(e => e.includes("earrings---large-studded-hoops")))
+  return (_dna.some(e => e.includes("base") && (e.includes("full") || e.includes("round")))) && (_dna.some(e => e.includes("earrings---large-skinny-hoops")) || _dna.some(e => e.includes("earrings---studded-hoops")))
 };
 
 // if glasses before stars on face
@@ -599,6 +599,23 @@ const isBlackHairWithBlackStuddedHoops = ( _dna = []) => {
   }
   return _dna.some(e => e.includes("earrings---studded-hoops-black")) && _dna.some(e => e.includes("back-hair") && e.includes("black"));
 };
+
+// no eth with shaved hair
+const isEthWithShaved = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("jewelry-face---forehead-crystal"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("jewelry-face---forehead-crystal")) && _dna.some(e => e.includes("front-hair---shaved"));
+};
+
+// no stacked collar with base angled
+const isBaseAngledWithJewelryNeckCollar = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("jewelry-neck---stacked-collar"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("base---angled")) && _dna.some(e => e.includes("jewelry-neck---stacked-collar"));
+};
+
 
 // rules
 const rules = ( _dna = []) => {
@@ -664,7 +681,9 @@ const rules = ( _dna = []) => {
       !isBaseOrRoundWithHoopEarrings(_dna) &&
       isSparkleBeforeGlasses(_dna) &&
       !isBlueBackgroundWithBlueHijab(_dna) &&
-      !isBlackHairWithBlackStuddedHoops(_dna);
+      !isBlackHairWithBlackStuddedHoops(_dna) &&
+      !isEthWithShaved(_dna) &&
+      !isBaseAngledWithJewelryNeckCollar(_dna);
   // }
 }
   module.exports = { rules }
