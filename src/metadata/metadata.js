@@ -23,7 +23,7 @@ const generateMetadata = (_item, _noOfItem, _attributesList) => {
 
 const saveMetadata = (_noOfItem) => {
     fs.writeFileSync(
-      `${buildDir}/json/${_noOfItem}.json`,
+      `${buildDir}/json/${_noOfItem}`,
       JSON.stringify(
         metadataList.find((metadata) => metadata.name == _noOfItem),
         null,

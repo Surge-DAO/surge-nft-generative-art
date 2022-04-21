@@ -1,0 +1,4 @@
+for file in *.json                                   
+do
+  echo mv "$file" "${file/.json/}"
+done

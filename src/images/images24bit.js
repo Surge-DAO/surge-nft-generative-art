@@ -27,7 +27,7 @@ const drawElement = (_renderObject, _attributesList) => {
 const addAttributes = (_element, _attributesList) => {
     let selectedElement = _element.layer.selectedElement;
     _attributesList.push({
-      trait_type: _element.layer.name,
+      trait_type: _element.layer.name.match(/[A-Z][a-z]+|[0-9]+/g).join(" "),
       value: getTraitName(selectedElement.name),
     });
 };

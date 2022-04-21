@@ -23,8 +23,9 @@ var itemList = [];
 var attributesList = [];
 
 const run = async () => {
-    let noOfItem = 21;
+    let noOfItem = 0;
     let failedCount = 0;
+    let maxItems = noOfItem + layerConfigurations.items
 
     // get layers based on configuration
     const layers = layersSetup(
@@ -32,10 +33,10 @@ const run = async () => {
     );
 
     // create images and metadata
-    while ( noOfItem <= layerConfigurations.items) {
+    while ( noOfItem <= maxItems) {
         let item = createItem(layers);
         if (isItemUnique(itemList, item) && rules(item) && isDarkSkinLightHairBelow(itemList, item)) {
-
+        
             let results = itemToLayers(item, layers);
             let loadedElements = [];
 
