@@ -1,9 +1,9 @@
 // add base URI 
 const baseUri = 'ipfs://QmVinWsPn6itUMx6GstbWYqBkCVhJGeG5Xh8wRdUf5WJcK';
-const description = 'Surge NFTs project';
+const description = 'Each Surge woman is of two worlds: pixel and pen. Each feature, though hand-sketched, has been layered algorithmically to form a whole. The Surge Passport collection represents our belief that beautiful things have a human touch.';
 
 const layerConfigurations = {
-      items: 30,
+      items: 10,
       layersOrder: [
         { name: 'Background' },
         { name: 'BackHair' },

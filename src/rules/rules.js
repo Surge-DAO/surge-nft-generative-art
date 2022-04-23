@@ -642,6 +642,14 @@ const isSimpleTurtleneckWithJewelryNeckCollar = ( _dna = []) => {
   return _dna.some(e => e.includes("simple-turtleneck")) && (_dna.some(e => e.includes("jewelry-neck---stacked-collar")));
 };
 
+// no turtleneck and red ribbon
+const isSimpleTurtleneckWithRedRibbon = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("simple-turtleneck"))) {
+    return false;
+  }
+  return _dna.some(e => e.includes("simple-turtleneck")) && (_dna.some(e => e.includes("jewelry-neck---red-ribbon")) || _dna.some(e => e.includes("jewelry-neck---black-ribbon")));
+};
+
 // rules
 const rules = ( _dna = []) => {
   // if((_dna.some(e => e.includes("bandana")))) {
@@ -708,7 +716,8 @@ const rules = ( _dna = []) => {
       !isBlackHairWithBlackStuddedHoops(_dna) &&
       !isEthWithShaved(_dna) &&
       !isBaseAngledWithJewelryNeckCollar(_dna) &&
-      !isTiarasMoreThanOne(_dna);
+      !isTiarasMoreThanOne(_dna) &&
+      !isSimpleTurtleneckWithRedRibbon(_dna);
   // }
 }
   module.exports = { rules }

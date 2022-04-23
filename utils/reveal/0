@@ -1,0 +1,29 @@
+{
+  "item": "ae0b1d53a22dbe4fa703587de0aedc84facabe83",
+  "name": 0,
+  "description": "Each Surge woman is of two worlds: pixel and pen. Each feature, though hand-sketched, has been layered algorithmically to form a whole. The Surge Passport collection represents our belief that beautiful things have a human touch.",
+  "image": "ipfs://QmajmdGpHs8Vmzema5ecKJBaFgHnmpaJes6cVAm5GR5mvD/0.png",
+  "date": 1650574258632,
+  "attributes": [
+    {
+      "trait_type": "Jewelry",
+      "value": " Ethereum"
+    },
+    {
+      "trait_type": "Hair",
+      "value": "Lush"
+    },
+    {
+      "trait_type": "Cheeks",
+      "value": "Blushed"
+    },
+    {
+      "trait_type": "Eyes",
+      "value": "Closed"
+    },
+    {
+      "trait_type": "Hand",
+      "value": "Shhh"
+    }
+  ]
+}

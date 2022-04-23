@@ -9,16 +9,14 @@ var metadataList = [];
 const generateMetadata = (_item, _noOfItem, _attributesList) => {
     let dateTime = Date.now();
     let tempMetadata = {
-      item: sha1(_item.join("")),
+      item: sha1(_attributesList),
       name: _noOfItem,
       description: description,
       image: `${baseUri}/${_noOfItem}.png`,
       date: dateTime,
       attributes: _attributesList,
-      compiler: "Surge NFTs",
     };
     metadataList.push(tempMetadata);
- //   attributesList = [];
 };
 
 const saveMetadata = (_noOfItem) => {

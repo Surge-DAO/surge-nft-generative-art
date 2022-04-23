@@ -15,7 +15,6 @@ const buildSetup = () => {
       fs.rmSync(buildDir, { recursive: true });
     }
     fs.mkdirSync(buildDir);
-    // TODO: create two dirs for 24bits and 8 bits
     fs.mkdirSync(`${buildDir}/json`);
     fs.mkdirSync(`${buildDir}/images-24bits`);
     fs.mkdirSync(`${buildDir}/images-8bits`);
