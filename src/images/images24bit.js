@@ -33,7 +33,7 @@ const addAttributes = (_element, _attributesList) => {
 };
 
 const getTraitName = (_str) => {
-  return capitalizeWords(_str.split("-").slice(3)).join(' ');
+  return capitalizeWords(_str.split("-").slice(3)).join(' ').trim();
 };
 
 const capitalizeWords = (arr) => {
