@@ -23,7 +23,7 @@ var itemList = [];
 var attributesList = [];
 
 const run = async () => {
-    let noOfItem = 215;
+    let noOfItem = 0;
     let failedCount = 0;
 
     // get layers based on configuration

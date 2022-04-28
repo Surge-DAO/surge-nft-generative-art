@@ -1,7 +1,7 @@
 // check if back hair, front hair, eyebrows-b match
 // long bangs in salmon, green, blue, and pink may be combined with black back hair or the same color back hair
 const hairColorsMatch = ( _dna = []) => {
-  if(_dna.some(e => e.includes("shaved"))) {
+  if(_dna.some(e => e.includes("shaved")))  {
     return true;
   }
     // check if long bangs salmon, green, blue or pink
@@ -60,9 +60,9 @@ const hairColorsMatch = ( _dna = []) => {
     return _dna.some(e => e.includes("natural-black")) && (_dna.some(e => e.includes("hazel")) || _dna.some(e => e.includes("baby night")));
   };
   
-  //back hair - natural black must be paired with "front hair - cornrows" or "front hair - baby curls"
+  //back hair - natural black must be paired with "front hair - baby curls"
   const isNaturalBlackWithCornRowsOrBabyCurls = ( _dna = []) => {
-    return _dna.some(e => e.includes("natural-black")) && (_dna.some(e => e.includes("cornrows")) || _dna.some(e => e.includes("baby-curls")));
+    return _dna.some(e => e.includes("natural-black")) && ( _dna.some(e => e.includes("baby-curls")));
   };
   
   const naturalBlackExistsAndApplyRules = ( _dna = []) => {
@@ -74,7 +74,7 @@ const hairColorsMatch = ( _dna = []) => {
   
   // "front hair - cornrows" of any color must be paired with "back hair - small braids" of the same color
   const areFrontHairCornrowsWithBackHairSmallBraids = ( _dna = []) => {
-    return _dna.some(e => e.includes("cornrows")) && _dna.some(e => e.includes("small-braids"));
+    return _dna.some(e => e.includes("cornrows")) && (_dna.some(e => e.includes("small-braids")));
   };
   
   const cornrowsExistsAndApplyRules = ( _dna = []) => {
@@ -87,7 +87,7 @@ const hairColorsMatch = ( _dna = []) => {
   // front hair cornrows and back hair small braids cannot be paired with "sand" base
   //new: any front or back hair with the words "cornrows" or "natural" in it can only be paired with base of color bisque, hazel, or night
   const isDarkBaseWithCornrowsOrSmallBraids = ( _dna = []) => {
-    if(!_dna.some(e => e.includes("cornrows") || e.includes("back-hair---natural") || e.includes("small-braids"))){
+    if(!_dna.some(e => e.includes("cornrows") || e.includes("back-hair---natural") || e.includes("small-braids")|| e.includes("baby-curls"))){
       return true;
     }
     return _dna.some(e => e.includes("base") && e.includes("spice")) || (_dna.some(e => e.includes("base") && e.includes("hazel")) ||  _dna.some(e => e.includes("base") && e.includes("night")));
@@ -119,13 +119,13 @@ const hairColorsMatch = ( _dna = []) => {
   
   // "front hair - baby curls" may be paired with any "back hair - small braids" color
   const areBabyCurlsWithSmallBraids = ( _dna = []) => {
-    return _dna.some(e => e.includes("baby-curls")) && _dna.some(e => e.includes("small-braids"));
+    // return _dna.some(e => e.includes("baby-curls")) && _dna.some(e => e.includes("natural-hair"));
   };
   
   const babyCurlsExistsAndApplyRules = ( _dna = []) => {
-    if (_dna.some(e => e.includes("baby-curls"))){
-      return areBabyCurlsWithSmallBraids(_dna);
-    }
+    // if (_dna.some(e => e.includes("baby-curls"))){
+    //   return areBabyCurlsWithSmallBraids(_dna);
+    // }
     return true;
   };
   
@@ -650,10 +650,23 @@ const isSimpleTurtleneckWithRibbon = ( _dna = []) => {
   return _dna.some(e => e.includes("simple-turtleneck")) && (_dna.some(e => e.includes("jewelry-neck---red-ribbon")) || _dna.some(e => e.includes("jewelry-neck") && e.includes("ribbon")));
 };
 
+// baby curls with natural hair or
+// -back-hair---small-braids-black
+// -back-hair---small-braids-jeweled
+// -back-hair---tall-pony-black
+//-back-hair---space-buns-black.
+const isBabyCurlswithAllowed = ( _dna = []) => {
+  if(!_dna.some(e => e.includes("baby-curls"))) {
+    return true;
+  }
+  return _dna.some(e => e.includes("baby-curls")) && (_dna.some(e => e.includes("natural-black")) || _dna.some(e => e.includes("small-braids")) || _dna.some(e => e.includes("tall-pony")) || _dna.some(e => e.includes("space-buns")) );
+};
+
 // rules
 const rules = ( _dna = []) => {
-  // if((_dna.some(e => e.includes("veil-gauzy")))) {
+  // if((_dna.some(e => e.includes("natural-black")))) {
     return hairColorsMatch(_dna) &&
+    isBabyCurlswithAllowed(_dna) &&
       isSharpFaceWithBlackStuddedHoops(_dna) &&
       !isRoundFullFaceWithBlackStuddedHoops(_dna) &&
       !areLongBangsWithVeilJewelry(_dna) &&
